@@ -6,11 +6,11 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2021/2 | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2021/02/index.html">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
@@ -152,68 +152,213 @@
           <div id="js-content" class="content-ll">
             
   
-  
+    <article id="post-2020-03-03-kubernetes集群搭建及dashboard配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/02/14/2021-02-13-%E6%B4%9E%E7%A9%B4%E5%A5%87%E6%A1%88%E7%AC%94%E8%AE%B0/" class="archive-article-date">
-  	<time datetime="2021-02-14T03:41:12.876Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-14</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/02/14/hello-world/" class="archive-article-date">
-  	<time datetime="2021-02-14T03:02:27.425Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-14</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/02/14/hello-world/">Hello World</a>
+      <a class="article-title" href="/2020/03/03/2020-03-03-kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%8F%8Adashboard%E9%85%8D%E7%BD%AE/">kubernetes 集群搭建及dashboard配置</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
+        
+        <a href="/2020/03/03/2020-03-03-kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%8F%8Adashboard%E9%85%8D%E7%BD%AE/" class="archive-article-date">
+  	<time datetime="2020-03-02T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="kubernetes-集群搭建及dashboard配置"><a href="#kubernetes-集群搭建及dashboard配置" class="headerlink" title="kubernetes 集群搭建及dashboard配置"></a>kubernetes 集群搭建及dashboard配置</h1><h2 id="1-前期准备"><a href="#1-前期准备" class="headerlink" title="1 前期准备"></a>1 前期准备</h2><p>简单地搭建一个kubernetes集群，暂时包含1个master和1个node，用的阿里云ECS。</p>
+<p>master:  CentOS 7.x|2core,4G|master ip自己查询</p>
+<p>node:    CentOS 7.x|2core,4G|node ip自己查询</p>
+<p>同时确保机器在同一地区，即内网内互通；确保能访问外网(需要拉取k8s镜像，不过也可以没有，因为有相关的备份镜像，不用科学上网也能下载)</p>
+<h3 id="1-1-配置服务器内容-所有节点"><a href="#1-1-配置服务器内容-所有节点" class="headerlink" title="1.1 配置服务器内容(所有节点)"></a>1.1 配置服务器内容(所有节点)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">关闭防火墙：</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br><span class="line"></span><br><span class="line">关闭selinux：</span><br><span class="line">sed -i &#39;s&#x2F;enforcing&#x2F;disabled&#x2F;&#39; &#x2F;etc&#x2F;selinux&#x2F;config </span><br><span class="line">setenforce 0</span><br><span class="line"></span><br><span class="line">关闭swap：</span><br><span class="line">swapoff -a  $ 临时</span><br><span class="line">vim &#x2F;etc&#x2F;fstab  $ 永久</span><br><span class="line"></span><br><span class="line">添加主机名与IP对应关系（记得设置主机名）：</span><br><span class="line">设置主机名：</span><br><span class="line">hostnamectl set-hostname k8s-master(其他k8s-node1等同理)</span><br><span class="line">不过这样修改后到时候集群查询时可能还会出现没有路由信息的警告，感觉是这个配置没有被加载到，可以尝试以下这个:</span><br><span class="line"></span><br><span class="line">vi &#x2F;etc&#x2F;hosts</span><br><span class="line">添加一行内容:</span><br><span class="line">本机ip(自己查询添加)  k8s-master</span><br><span class="line">node上的同理改成k8s-node1、k8s-node2等</span><br><span class="line"></span><br><span class="line">将桥接的IPv4流量传递到iptables的链：</span><br><span class="line">cat &gt; &#x2F;etc&#x2F;sysctl.d&#x2F;k8s.conf &lt;&lt; EOF</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables &#x3D; 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables &#x3D; 1</span><br><span class="line">EOF</span><br><span class="line">$ sysctl --system</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-安装docker-kubeadm-kubelet-kubectl-所有节点"><a href="#1-2-安装docker-kubeadm-kubelet-kubectl-所有节点" class="headerlink" title="1.2 安装docker/kubeadm/kubelet/kubectl(所有节点)"></a>1.2 安装docker/kubeadm/kubelet/kubectl(所有节点)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 安装docker18.06.1</span><br><span class="line">wget https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo -O &#x2F;etc&#x2F;yum.repos.d&#x2F;docker-ce.repo</span><br><span class="line">yum -y install docker-ce-18.06.1.ce-3.el7</span><br><span class="line">systemctl enable docker &amp;&amp; systemctl start docker</span><br><span class="line">docker --version</span><br><span class="line">显示:Docker version 18.06.1-ce, build e68fc7a</span><br><span class="line"></span><br><span class="line"># 添加阿里云yum软件源</span><br><span class="line">cat &gt; &#x2F;etc&#x2F;yum.repos.d&#x2F;kubernetes.repo &lt;&lt; EOF</span><br><span class="line">[kubernetes]</span><br><span class="line">name&#x3D;Kubernetes</span><br><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;yum&#x2F;repos&#x2F;kubernetes-el7-x86_64</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgcheck&#x3D;1</span><br><span class="line">repo_gpgcheck&#x3D;1</span><br><span class="line">gpgkey&#x3D;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;yum&#x2F;doc&#x2F;yum-key.gpg https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;kubernetes&#x2F;yum&#x2F;doc&#x2F;rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"># 安装kubeadm，kubelet和kubectl，指定版本v1.14.0</span><br><span class="line">$ yum install -y kubelet-1.14.0 kubeadm-1.14.0 kubectl-1.14.0</span><br><span class="line">$ systemctl enable kubelet</span><br><span class="line"></span><br><span class="line">#安装kubelet 后会生成文件目录&#x2F;etc&#x2F;kubernetes&#x2F;manifests&#x2F;</span><br></pre></td></tr></table></figure>
+<h2 id="2-部署master"><a href="#2-部署master" class="headerlink" title="2 部署master"></a>2 部署master</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init \</span><br><span class="line">--apiserver-advertise-address&#x3D;&lt;master ip，自己查询&gt; \</span><br><span class="line">--image-repository registry.aliyuncs.com&#x2F;google_containers \</span><br><span class="line">--kubernetes-version v1.14.0 \</span><br><span class="line">--service-cidr&#x3D;10.1.0.0&#x2F;16 \</span><br><span class="line">--pod-network-cidr&#x3D;10.244.0.0&#x2F;16</span><br><span class="line"></span><br><span class="line"># 这里init的过程中会给出一个token内容，是后续node加入集群时需要使用的指令，记得保存，并且有效期只有1天，可以重新生成，后面会讲</span><br><span class="line"></span><br><span class="line">#拷贝配置文件</span><br><span class="line">mkdir -p $HOME&#x2F;.kube</span><br><span class="line">sudo cp -i &#x2F;etc&#x2F;kubernetes&#x2F;admin.conf $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME&#x2F;.kube&#x2F;config</span><br><span class="line"></span><br><span class="line"># 查看当前master状态</span><br><span class="line">kubectl get nodes</span><br><span class="line">显示: master ready等信息</span><br></pre></td></tr></table></figure>
+<p>在master配置完毕后，需要安装网络插件，这里采用flannel，它的作用主要是为集群中的各个节点进行子网再分配，使得节点之间的通信打通，获得各自唯一的ip地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;coreos&#x2F;flannel&#x2F;a70459be0084506e4ec919aa1c114638878db11b&#x2F;Documentation&#x2F;kube-flannel.yml</span><br></pre></td></tr></table></figure>
+<p>或者可以直接找到flannel相应的yml文件，然后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f kube-flannel.yml</span><br></pre></td></tr></table></figure>
+<h2 id="3-配置node"><a href="#3-配置node" class="headerlink" title="3 配置node"></a>3 配置node</h2><p>直接输入之前master初始化时给出的kube join那段指令<br>基于有效期、没保存token等问题，可以去重新生成一个token:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 在master中输入命令:</span><br><span class="line">kubeadm token create</span><br></pre></td></tr></table></figure>
+<p>复制生成的token，在node中输入命令即可加入。</p>
+<h3 id="3-1-查看当前集群状态"><a href="#3-1-查看当前集群状态" class="headerlink" title="3.1 查看当前集群状态"></a>3.1 查看当前集群状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<p>这里可能出现一个问题:<br>The connection to the server localhost:8080 was refused - did you specify the right host or port?<br>这里主要是<strong>kubectl命令</strong>需要使用kubernetes-admin来运行，而**<em>node节点上暂时没有这个配置文件**</em>。<br>将master中的/etc/kubernetes/admin.conf拷贝到node相同目录下(/etc/kubernetes/admin.conf)，然后配置环境变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;export KUBECONFIG&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;admin.conf&quot; &gt;&gt; ~&#x2F;.bash_profile</span><br><span class="line">source ~&#x2F;.bash_profile</span><br></pre></td></tr></table></figure>
+<p>这样之后就能通过kubectl的各种命令查看集群中的节点信息了。</p>
+<h2 id="4-测试集群是否正常运行"><a href="#4-测试集群是否正常运行" class="headerlink" title="4 测试集群是否正常运行"></a>4 测试集群是否正常运行</h2><p>这里用的是简单的例子，加载一个nginx的pod:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment nginx --image&#x3D;nginx</span><br><span class="line">kubectl expose deployment nginx --port&#x3D;80 --type&#x3D;NodePort</span><br><span class="line">kubectl get pod,svc</span><br><span class="line">#可以看到有nginx-***的pod内容</span><br></pre></td></tr></table></figure>
+<p>如果想要删除的话，可以通过kubectl delete:<br>但是要注意不能直接删除pod，因为replicas机制会保证正常运行的pod数为1，删除后还会重开一个，kubectl delete pods [….]一般用于删除dead pod等不健康的pod内容。<br>想要完全删除pod，需要删除deployment:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 至于删除哪个deployment 可以查询:</span><br><span class="line">kubectl get deployment</span><br><span class="line"># 然后删除这个配置生成的pod</span><br><span class="line">kubectl delete deployment nginx.yaml</span><br></pre></td></tr></table></figure>
+<h2 id="5-部署dashboard"><a href="#5-部署dashboard" class="headerlink" title="5 部署dashboard"></a>5 部署dashboard</h2><p>为集群添加一个可视化UI界面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kubernetes&#x2F;dashboard&#x2F;v1.10.1&#x2F;src&#x2F;deploy&#x2F;recommended&#x2F;kubernetes-dashboard.yaml</span><br><span class="line">vi kubernetes-dashboard.yaml</span><br><span class="line"># 修改文件中的部分内容</span><br><span class="line">--------------1. 修改镜像地址，防止镜像无法拉取------------------</span><br><span class="line"># 镜像拉不了的话，到时候查状态，会显示容器状态为ImagePullBackOff</span><br><span class="line"># 原image地址为: k8s.gcr.io&#x2F;kubernetes-dashboard-amd64:v1.10.1</span><br><span class="line"># 修改为: roeslys&#x2F;kubernetes-dashboard-amd64:v1.10.1</span><br><span class="line"># 或者 用命令docker search 查一下有没有目前你这个网可哟弄的dashboard镜像(docker search相关的命令自行查询)</span><br><span class="line">-------------------2. 修改Service类型和port----------------------</span><br><span class="line">kind: Service</span><br><span class="line">apiVersion: v1</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    k8s-app: kubernetes-dashboard</span><br><span class="line">  name: kubernetes-dashboard</span><br><span class="line">  namespace: kube-system</span><br><span class="line">spec:</span><br><span class="line">  type: NodePort(改这个type)</span><br><span class="line">  ports:</span><br><span class="line">    - port: 443</span><br><span class="line">      targetPort: 8443</span><br><span class="line">      nodePort: 30000(添加这个nodePort，同时把ECS的安全组策略添加上30000端口的入方向策略)</span><br><span class="line">  selector:</span><br><span class="line">    k8s-app: kubernetes-dashboard</span><br><span class="line">-------------------------3. 完成---------------------------------</span><br><span class="line"># 然后应用这个yaml文件就好了</span><br><span class="line">kubectl apply -f kubernetes-dashboard.yaml</span><br></pre></td></tr></table></figure>
+<p>此时可以通过**<em>火狐浏览器**</em>访问UI界面，地址栏输入<a target="_blank" rel="noopener" href="https://nodeip:30000/">https://NodeIP:30000</a><br>此时进入页面，需要使用令牌或kuberconfig:<br>需要在master上创建一个全局管理员</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># master上输入</span><br><span class="line">kubectl create serviceaccount dashboard-admin -n kube-system</span><br><span class="line">kubectl create clusterrolebinding dashboard-admin --clusterrole&#x3D;cluster-admin --serviceaccount&#x3D;kube-system:dashboard-admin</span><br><span class="line">kubectl describe secrets -n kube-system $(kubectl -n kube-system get secret | awk &#39;&#x2F;dashboard-admin&#x2F;&#123;print $1&#125;&#39;)</span><br><span class="line"># 把输出的token字段复制，保存</span><br></pre></td></tr></table></figure>
+<p>再访问这个地址，使用令牌登陆，粘贴上去，就能看到最后完成的UI界面了<br><img src="https://github.com/Liccol/Liccol.github.io/raw/master/img/dashboard-UI.png" alt="Aaron Swartz"></p>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Kubernetes</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">dashboard</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/03/2020-03-03-kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%8F%8Adashboard%E9%85%8D%E7%BD%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
+    <article id="post-2019-10-15-c++调用Lua函数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
-    </div></section>
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/15/2019-10-15-c++%E8%B0%83%E7%94%A8Lua%E5%87%BD%E6%95%B0/">c++调用Lua函数</a>
+    </h1>
   
 
+        
+        <a href="/2019/10/15/2019-10-15-c++%E8%B0%83%E7%94%A8Lua%E5%87%BD%E6%95%B0/" class="archive-article-date">
+  	<time datetime="2019-10-14T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-15</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="c-调用Lua函数"><a href="#c-调用Lua函数" class="headerlink" title="c++调用Lua函数"></a>c++调用Lua函数</h1><p>　　最近由于项目需要，需要在客户端中使用C++调用lua函数，所以简单写了篇关于c++和lua调用的文档，其中也有一些暂时没搞懂的东西，先留做记录。</p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>　　比较简单，实际上就是通过lua栈为中介实现的，这里的栈对应的是lua_State对象。lua栈和普通堆栈一样，遵循先进后出原则，涉及操作简单来说就是出栈和入栈，这些操作支持的数据格式是多样的，eg:int,string等。  </p>
+<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><p>使用时在<strong>windows系统</strong>下，用到<strong>lua51+vs2017</strong>。使用前请确保你具备以下内容：<br>1.lua源码及lua相关的库文件<br>　　我这边用的是lua51.lib，在进行调用时会打开这个lib（lua的静态库、动态库生成方法自行搜索）。<br>2.调用用lua文件test.lua<br>3.测试用cpp文件addon_test.cpp<br>4.设置好的vs和目录结构<br>　　项目建好之后，在vs界面中选择项目-&gt;项目属性-&gt;VC++目录-&gt;库目录，把lua的lib所在目录添加进去，应用即可。目录结构方面是为了让使用同样代码进行测试的朋友方便测试，我的目录结构大致如下：<br>├─addTest<br>│  │  addTest.vcxproj<br>│  │  addTest.vcxproj.filters<br>│  │  addTest.vcxproj.user<br>│  ├─cluaAddon<br>│  │  │  addon_test.cpp<br>│  │  │  test.lua<br>│  │  └─lua(下载的lua源文件，除去luac.c和lua.c)<br>│  │  　　├─doc<br>│  │  　　└─src<br>│  └─Debug<br>└─Debug  </p>
+<h2 id="调用示例"><a href="#调用示例" class="headerlink" title="调用示例"></a>调用示例</h2><p>test.lua文件内容如下:</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">&quot;it&#x27;s str test.&quot;</span>  </span><br><span class="line">tb = &#123;name = <span class="string">&quot;shun&quot;</span>, id = <span class="number">123</span>&#125;  </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span> <span class="params">(a, b)</span></span>  </span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">print_test</span><span class="params">()</span></span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;print test.&quot;</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>主要试验了几块内容：<br>1.变量内容传递<br>2.无参函数的调用<br>3.有参函数的调用  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;  </span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">// 包含头文件</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;lua/src/lua.h&quot;</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;lua/src/lualib.h&quot;</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;lua/src/lauxlib.h&quot;</span>  </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//#pragma comment(lib,&quot;lua51.lib&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 创建lua堆栈</span></span><br><span class="line">	lua_State *L = luaL_newstate();</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Creat Lua State Error !&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 如需在终端输出打印信息，库是必须加载的，否则看不到lua的print信息</span></span><br><span class="line">	luaL_openlibs(L);</span><br><span class="line">	<span class="comment">// 加载lua脚本</span></span><br><span class="line">	<span class="keyword">int</span> ret = luaL_dofile(L, <span class="string">&quot;D:\\vsProject\\addTest\\addTest\\cluaAddon\\test.lua&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span> (ret)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Lua doFile Error !&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 调用.lua中写好的内容</span></span><br><span class="line">	<span class="comment">// 读取变量内容</span></span><br><span class="line">	lua_getglobal(L, <span class="string">&quot;str&quot;</span>);	<span class="comment">//变量名为str</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;str is &quot;</span> &lt;&lt; lua_tostring(L, <span class="number">-1</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	lua_getglobal(L, <span class="string">&quot;tb&quot;</span>);		<span class="comment">//获取table中对应name下的value</span></span><br><span class="line">	lua_getfield(L, <span class="number">-1</span>, <span class="string">&quot;name&quot;</span>);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;name in tb is&quot;</span> &lt;&lt; lua_tostring(L, <span class="number">-1</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="comment">// 无参函数</span></span><br><span class="line">	lua_getglobal(L, <span class="string">&quot;print_test&quot;</span>);   <span class="comment">//函数名为ruler</span></span><br><span class="line">	lua_pcall(L, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);          <span class="comment">//用保护模式调用lua函数，入参个数为0、出参个数为0、无自定义错误处理</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 有参函数</span></span><br><span class="line">	lua_getglobal(L, <span class="string">&quot;add&quot;</span>);     <span class="comment">//函数名为add</span></span><br><span class="line">	lua_pushnumber(L, <span class="number">1</span>);  <span class="comment">//第一个入参</span></span><br><span class="line">	lua_pushnumber(L, <span class="number">2</span>);  <span class="comment">//第二个入参  </span></span><br><span class="line">	lua_pcall(L, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>);          <span class="comment">//函数有两个入参，一个出参，所以函数形式为add(a,b)</span></span><br><span class="line">	<span class="comment">//5、获得返回值，单回值情况下调用完成后lua会把结果放到栈顶，多返回值时，按照规则存放，具体查API</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> (lua_isnumber(L, <span class="number">-1</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;the result is :&quot;</span> &lt;&lt; lua_tonumber(L, <span class="number">-1</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//6、销毁lua环境</span></span><br><span class="line">	lua_close(L);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以直接看上面代码，注释里提到了流程，也可以看下面的分步分析。<br>　　C++调用lua文件中的函数主要分为以下几个部分：<br>1.包含头文件<br>　　主要是包含三个文件lua.h、lualib.h、lauxlib.h，当然你也可以直接#include lua.hpp，实际上是等价的，因为lua.hpp的内容是这样的:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lua.hpp</span></span><br><span class="line"><span class="comment">// Lua header files for C++</span></span><br><span class="line"><span class="comment">// &lt;&lt;extern &quot;C&quot;&gt;&gt; not supplied automatically because Lua also compiles as C++</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;lua.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;lualib.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;lauxlib.h&quot;</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.新建lua堆栈</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lua_State *L &#x3D; luaL_newstate();  </span><br></pre></td></tr></table></figure>
+<p>3.加载必要库和lua文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">luaL_openlibs(L);&#x2F;&#x2F;这个是为了使得lua的打印等输出可以在cpp代码调试时显示出来  </span><br><span class="line">int ret &#x3D; luaL_dofile(L, &quot;D:\\vsProject\\addTest\\addTest\\cluaAddon\\test.lua&quot;);</span><br><span class="line">	if (ret)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; &quot;Lua doFile Error !&quot; &lt;&lt; endl;</span><br><span class="line">		return -1;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>luaL_dofile调用的时候用的是绝对路径，直接使用test.lua会加载失败，暂时没有找到问题所在，后续解决了的话再来添加解决方案。<br>4.调用.lua中的函数<br>　　分为有参和无参两种，主要通过lua_pcall等关键函数　　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 无参函数</span><br><span class="line">	lua_getglobal(L, &quot;print_test&quot;);   &#x2F;&#x2F;函数名为ruler</span><br><span class="line">	lua_pcall(L, 0, 0, 0);          &#x2F;&#x2F;用保护模式调用lua函数，入参个数为0、出参个数为0、无自定义错误处理</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; 有参函数</span><br><span class="line">	lua_getglobal(L, &quot;add&quot;);     &#x2F;&#x2F;函数名为add</span><br><span class="line">	lua_pushnumber(L, 1);  &#x2F;&#x2F;第一个入参</span><br><span class="line">	lua_pushnumber(L, 2);  &#x2F;&#x2F;第二个入参  </span><br><span class="line">	lua_pcall(L, 2, 1, 0); &#x2F;&#x2F;函数有两个入参，一个出参，所以函数形式为add(a,b)</span><br><span class="line">	cout &lt;&lt; &quot;the result is :&quot; &lt;&lt; lua_tonumber(L, -1) &lt;&lt; endl; &#x2F;&#x2F;有返回值的函数的结果被存在栈中，通过lua_tonumbner等取出</span><br></pre></td></tr></table></figure>
+<p>　　主要做的就是，先通过getglobal把加载相关内容，然后向lua堆栈中推函数的参数(当然没有的话就不用push)。完事后调用lua_pcall指明函数的入参数目，出参数目和错误处理(错误处理暂未涉及，需要的可以自行查看源码)，最后将结果取出。<br>5.获取栈中数据<br>　　对函数结果的取出在4.中已经写明了，当然也可以直接获取.lua中的变量内容，例如获取string类型的str和table类型的tb中的某个值：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取变量内容</span></span><br><span class="line">	lua_getglobal(L, <span class="string">&quot;str&quot;</span>);	<span class="comment">//变量名为str</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;str is &quot;</span> &lt;&lt; lua_tostring(L, <span class="number">-1</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	lua_getglobal(L, <span class="string">&quot;tb&quot;</span>);		<span class="comment">//获取table中对应name下的value</span></span><br><span class="line">	lua_getfield(L, <span class="number">-1</span>, <span class="string">&quot;name&quot;</span>);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;name in tb is&quot;</span> &lt;&lt; lua_tostring(L, <span class="number">-1</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>6.调用完毕后，销毁lua堆栈</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lua_close(L);  </span><br></pre></td></tr></table></figure>
+<p>至此，所有流程走完。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="http://gamedevgeek.com/2006/05/04/lua-tutorials/">http://gamedevgeek.com/2006/05/04/lua-tutorials/</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/yxli_2018/article/details/79259518">https://blog.csdn.net/yxli_2018/article/details/79259518</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_33887443/article/details/86038932">https://blog.csdn.net/weixin_33887443/article/details/86038932</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Lua</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">c++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/10/15/2019-10-15-c++%E8%B0%83%E7%94%A8Lua%E5%87%BD%E6%95%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </nav>
+  
 
 
           </div>
@@ -235,9 +380,9 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
+		isHome: true,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
