@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Kubernetes详解 | 长晴</title>
+  <title>Kubernetes基础知识之控制面板组件 | 长晴</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="KubernetesKubernetes核心组件(重要)最重要的API Server提供K8S各类资源对象的增删改查+Watch+K8S Proxy API的HTTP Rest接口，是集群内各模块间数据交互和通信的中心枢纽。 还提供集群管理API&#x2F;资源配额控制API&#x2F;集群安全机制。 在8080端口提供REST服务，6443端口提供HTTPS安全端口加强接口访问安全性。 curl localhost">
+  <meta name="description" content="作为热门的容器技术之一，Kubernetes有其独特的技术特征。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kubernetes详解">
-<meta property="og:url" content="http://example.com/2020/09/11/2020-09-11-Kubernetes/index.html">
+<meta property="og:title" content="Kubernetes基础知识之控制面板组件">
+<meta property="og:url" content="http://example.com/2020/09/11/Kubernetes%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8B%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%9D%BF%E7%BB%84%E4%BB%B6/index.html">
 <meta property="og:site_name" content="长晴">
-<meta property="og:description" content="KubernetesKubernetes核心组件(重要)最重要的API Server提供K8S各类资源对象的增删改查+Watch+K8S Proxy API的HTTP Rest接口，是集群内各模块间数据交互和通信的中心枢纽。 还提供集群管理API&#x2F;资源配额控制API&#x2F;集群安全机制。 在8080端口提供REST服务，6443端口提供HTTPS安全端口加强接口访问安全性。 curl localhost">
+<meta property="og:description" content="作为热门的容器技术之一，Kubernetes有其独特的技术特征。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://pic4.zhimg.com/80/v2-5263be53b45fdbea59e9812d9df627b7_720w.jpg">
 <meta property="og:image" content="https://github.com/Liccol/Liccol.github.io/blob/master/img/kubernetes-1.webp">
@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://cdn.nlark.com/lark/0/2018/png/86722/1543237287466-eacc4930-922f-4e21-9eb3-60c29da4397f.png">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3342415-11aa91afa043ae7a.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp">
 <meta property="article:published_time" content="2020-09-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-02-06T01:18:19.657Z">
+<meta property="article:modified_time" content="2021-02-14T09:01:31.083Z">
 <meta property="article:author" content="Chenhan Li">
 <meta property="article:tag" content="Kubernetes">
 <meta name="twitter:card" content="summary">
@@ -166,19 +166,19 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2020-09-11-Kubernetes" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Kubernetes基础知识之控制面板组件" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Kubernetes详解
+      Kubernetes基础知识之控制面板组件
     </h1>
   
 
         
-        <a href="/2020/09/11/2020-09-11-Kubernetes/" class="archive-article-date">
+        <a href="/2020/09/11/Kubernetes%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8B%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%9D%BF%E7%BB%84%E4%BB%B6/" class="archive-article-date">
   	<time datetime="2020-09-10T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-11</time>
 </a>
         
@@ -186,7 +186,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h1><h1 id="Kubernetes核心组件-重要"><a href="#Kubernetes核心组件-重要" class="headerlink" title="Kubernetes核心组件(重要)"></a>Kubernetes核心组件(重要)</h1><h2 id="最重要的API-Server"><a href="#最重要的API-Server" class="headerlink" title="最重要的API Server"></a>最重要的API Server</h2><p>提供K8S各类<strong>资源对象的增删改查+Watch+K8S Proxy API的HTTP Rest接口</strong>，是集群内<strong>各模块间数据交互和通信的中心枢纽</strong>。</p>
+        <p>Kubernetes的核心组件包括API Server、Scheduler、Controller Manager、ETCD等。</p>
+<a id="more"></a>
+
+<h1 id="最重要的API-Server"><a href="#最重要的API-Server" class="headerlink" title="最重要的API Server"></a>最重要的API Server</h1><p>提供K8S各类<strong>资源对象的增删改查+Watch+K8S Proxy API的HTTP Rest接口</strong>，是集群内<strong>各模块间数据交互和通信的中心枢纽</strong>。</p>
 <p>还提供<strong>集群管理</strong>API/<strong>资源配额控制</strong>API/<strong>集群安全</strong>机制。</p>
 <p>在8080端口提供REST服务，6443端口提供HTTPS安全端口加强接口访问安全性。</p>
 <p>curl localhost:8080/api查看版本信息。此后的一系列地址可以查看更多细节。</p>
@@ -200,7 +203,7 @@
 <li><p>高性能etcd数据库，而不是传统关系型数据库。</p>
 </li>
 </ul>
-<h3 id="最重要的List-Watch"><a href="#最重要的List-Watch" class="headerlink" title="最重要的List-Watch"></a>最重要的List-Watch</h3><p>Etcd存储集群的数据信息，apiserver作为统一入口，任何对数据的操作都必须经过apiserver。</p>
+<h2 id="最重要的List-Watch"><a href="#最重要的List-Watch" class="headerlink" title="最重要的List-Watch"></a>最重要的List-Watch</h2><p>Etcd存储集群的数据信息，apiserver作为统一入口，任何对数据的操作都必须经过apiserver。</p>
 <p>客户端(kubelet/scheduler/controller-manager)通过list-watch监听apiserver中资源(pod/rs/rc等等)的create,update和delete事件，并针对事件类型调用相应的事件处理函数。</p>
 <p>各模块间需要和API Server轮询资源对象状态，API Server需要向各模块发出通知，这两块怎么实现，通过List-Watch。</p>
 <p>针对这个场景，会发现几个问题：</p>
@@ -237,7 +240,7 @@
 <li>高性能</li>
 </ul>
 <p>List-watch通过异步通知达到高性能的特点，watch作为异步消息通知机制，复用一条长链接，保证实时性的同时也保证了性能。</p>
-<h3 id="API-Server架构"><a href="#API-Server架构" class="headerlink" title="API Server架构"></a>API Server架构</h3><p>API层-&gt;访问控制层-&gt;注册表层-&gt;etcd数据库</p>
+<h2 id="API-Server架构"><a href="#API-Server架构" class="headerlink" title="API Server架构"></a>API Server架构</h2><p>API层-&gt;访问控制层-&gt;注册表层-&gt;etcd数据库</p>
 <ul>
 <li>API层</li>
 </ul>
@@ -259,12 +262,12 @@
 </ul>
 <p>版本迭代和版本数据转换。处理的是同一对象不同版本的数据转换问题以及API接口版本兼容问题。</p>
 <p>使用版本号控制接口兼容区分，数据转换使用internal版本，各个版本对象都能转换成internal版本对象，做各个版本对象的数据转换中介，从两两连接的混乱拓扑变成星状图。</p>
-<h3 id="API-Server提供的另一个独特接口——K8S-Proxy-API接口"><a href="#API-Server提供的另一个独特接口——K8S-Proxy-API接口" class="headerlink" title="API Server提供的另一个独特接口——K8S Proxy API接口"></a>API Server提供的另一个独特接口——K8S Proxy API接口</h3><p>是作为代理，把收到的REST请求转发到Node上的kubelet的ERST接口，由kubelet响应。</p>
+<h2 id="API-Server提供的另一个独特接口——K8S-Proxy-API接口"><a href="#API-Server提供的另一个独特接口——K8S-Proxy-API接口" class="headerlink" title="API Server提供的另一个独特接口——K8S Proxy API接口"></a>API Server提供的另一个独特接口——K8S Proxy API接口</h2><p>是作为代理，把收到的REST请求转发到Node上的kubelet的ERST接口，由kubelet响应。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;获取节点上所有Pods, 获取的信息是来自Node的,可能与etcd的有时间偏差</span><br><span class="line">curl localhost:8080&#x2F;api&#x2F;v1&#x2F;proxy&#x2F;node&#x2F;node1&#x2F;pods</span><br><span class="line">&#x2F;&#x2F;访问pod</span><br><span class="line">curl localhost:8080&#x2F;api&#x2F;v1&#x2F;proxy&#x2F;node&#x2F;node1&#x2F;pods&#x2F;&#123;name&#125;</span><br><span class="line">&#x2F;&#x2F;访问接口</span><br><span class="line">curl localhost:8080&#x2F;api&#x2F;v1&#x2F;proxy&#x2F;node&#x2F;node1&#x2F;pods&#x2F;&#123;path:&#125;</span><br></pre></td></tr></table></figure>
 <p>这类接口主要是用来在外部冯文某个Pod容器的HTTP服务，用Proxy API实现，比如用来逐一排查Service的Pod哪个异常了。</p>
 <p>同时service也可以使用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:8080&#x2F;api&#x2F;v1&#x2F;provy&#x2F;namespace&#x2F;&#123;namespace&#125;&#x2F;services&#x2F;&#123;name&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="集群模块间通信"><a href="#集群模块间通信" class="headerlink" title="集群模块间通信"></a>集群模块间通信</h3><ul>
+<h2 id="集群模块间通信"><a href="#集群模块间通信" class="headerlink" title="集群模块间通信"></a>集群模块间通信</h2><ul>
 <li>kubelet与API server</li>
 </ul>
 <p>kubelet定期调用REST接口报告自身状态，API server把节点信息更新到etcd。</p>
@@ -282,8 +285,8 @@
 </ul>
 <p>各模块都采用本地缓存，缓存数据，各模块定时使用List-Watch方法获得想要的信息，缓存在本地缓存。</p>
 <p>某些情况下通过访问缓存来直接操作，而不用直接访问API Server。从而降低API Server的访问压力。</p>
-<h2 id="Controller-manager"><a href="#Controller-manager" class="headerlink" title="Controller manager"></a>Controller manager</h2><p>各个controller通过LW接口实时监控特定资源变化，并应对故障，保持状态为期望状态。共有8类。</p>
-<h3 id="Replication-Controller"><a href="#Replication-Controller" class="headerlink" title="Replication Controller"></a>Replication Controller</h3><p>副本控制器，不同于资源对象RC，确保任何时候与RC关联的Pod副本数保持在预设值。但注意RC的重启策略必须是always。</p>
+<h1 id="Controller-manager"><a href="#Controller-manager" class="headerlink" title="Controller manager"></a>Controller manager</h1><p>各个controller通过LW接口实时监控特定资源变化，并应对故障，保持状态为期望状态。共有8类。</p>
+<h2 id="Replication-Controller"><a href="#Replication-Controller" class="headerlink" title="Replication Controller"></a>Replication Controller</h2><p>副本控制器，不同于资源对象RC，确保任何时候与RC关联的Pod副本数保持在预设值。但注意RC的重启策略必须是always。</p>
 <p>因为有了副本控制器，所以最好不要直接创建Pod，而使用deploymengt等来构建。</p>
 <p>综上：</p>
 <p>副本控制器做的是：</p>
@@ -304,7 +307,7 @@
 <li><p>滚动更新，副本控制器的流程是逐个替换Pod的方式，通过依次增新Pod，减旧Pod来实现所有副本的更新。直到旧RC副本为0，然后删除。</p>
 </li>
 </ol>
-<h3 id="Node-Controller"><a href="#Node-Controller" class="headerlink" title="Node Controller"></a>Node Controller</h3><p>kubelet启动时会在API Server注册Node信息，并定时汇报状态，API Server更新信息到etcd中，包括健康状态，资源，名称，地址信息，OS版本，docker版本，kubelet版本。</p>
+<h2 id="Node-Controller"><a href="#Node-Controller" class="headerlink" title="Node Controller"></a>Node Controller</h2><p>kubelet启动时会在API Server注册Node信息，并定时汇报状态，API Server更新信息到etcd中，包括健康状态，资源，名称，地址信息，OS版本，docker版本，kubelet版本。</p>
 <p>Node Controller通过API Server获取Node信息，管理和监控集群中各个Node。</p>
 <p>工作流程：</p>
 <ol>
@@ -322,28 +325,28 @@
 <li><p>逐个读取节点信息，未就绪节点入队列，准备删除；并同步正常节点更新的信息。</p>
 </li>
 </ol>
-<h3 id="ResourceQuota-Controller-资源配额管理器"><a href="#ResourceQuota-Controller-资源配额管理器" class="headerlink" title="ResourceQuota Controller 资源配额管理器"></a>ResourceQuota Controller 资源配额管理器</h3><p>确保指定资源对象任何时候都不会超量占用系统物理资源，避免某些设计缺陷导致系统紊乱/宕机。</p>
+<h2 id="ResourceQuota-Controller-资源配额管理器"><a href="#ResourceQuota-Controller-资源配额管理器" class="headerlink" title="ResourceQuota Controller 资源配额管理器"></a>ResourceQuota Controller 资源配额管理器</h2><p>确保指定资源对象任何时候都不会超量占用系统物理资源，避免某些设计缺陷导致系统紊乱/宕机。</p>
 <p>层次为：容器级别、Pod级别、namespace（多租户）级别(pod数量,RC数量,Service数量,ResourceQuota数量,Secret数量,PV数量)</p>
 <p>资源配额通过API Server的准入控制来控制（ResourceQuota(作用于namespace)和LimitRanger(作用于Pod和容器)两种方式）。</p>
 <p>每次请求创建资源时，准入控制会计算当前配额使用情况，从etcd里读，不符合那就创建失败。</p>
 <p>符合那就更新目前配置的资源量到etcd。而这些信息从ResourceQuota Controller中更新得到，最后存入etcd。</p>
-<h3 id="Namespace-Controller"><a href="#Namespace-Controller" class="headerlink" title="Namespace Controller"></a>Namespace Controller</h3><p>定时读取namespace信息，如果有namespace要优雅删除，则标记，更新到etcd。准入控制里同时会组织改namespace继续创建新资源。</p>
-<h3 id="Service-controller-和-endpoint-controller"><a href="#Service-controller-和-endpoint-controller" class="headerlink" title="Service controller 和 endpoint controller"></a>Service controller 和 endpoint controller</h3><p>service/endpoint/pod关系：endpoint为service对应的所有Pod副本的访问地址(具体为PODIP:PORTS)</p>
+<h2 id="Namespace-Controller"><a href="#Namespace-Controller" class="headerlink" title="Namespace Controller"></a>Namespace Controller</h2><p>定时读取namespace信息，如果有namespace要优雅删除，则标记，更新到etcd。准入控制里同时会组织改namespace继续创建新资源。</p>
+<h2 id="Service-controller-和-endpoint-controller"><a href="#Service-controller-和-endpoint-controller" class="headerlink" title="Service controller 和 endpoint controller"></a>Service controller 和 endpoint controller</h2><p>service/endpoint/pod关系：endpoint为service对应的所有Pod副本的访问地址(具体为PODIP:PORTS)</p>
 <p>endpoints对象在Node的kube-proxy上使用，proxy获取每个endpoints，实现Service负载均衡。</p>
 <p>endpoint controller负责生成和维护所有endpoints对象信息。监听service和Pod副本变化，变化则同步更新service，Pod对应的endpoints对象。</p>
 <p>Service controller监听service，如果是loadbalance类型，那么确保在外部云平台上对应的loadbalance实例更新正确，并更新路由转发表（根据endpoint）</p>
-<h3 id="ServiceCount-controller-和-Token-controller"><a href="#ServiceCount-controller-和-Token-controller" class="headerlink" title="ServiceCount controller 和 Token controller"></a>ServiceCount controller 和 Token controller</h3><p>ServiceCount controller保证每个namespace至少有一个default service account。</p>
+<h2 id="ServiceCount-controller-和-Token-controller"><a href="#ServiceCount-controller-和-Token-controller" class="headerlink" title="ServiceCount controller 和 Token controller"></a>ServiceCount controller 和 Token controller</h2><p>ServiceCount controller保证每个namespace至少有一个default service account。</p>
 <p>如果启动了APIserver私钥，Token controller会被创建，也监听serviceaccount。确保serviceaccount至少有一个secret对象。</p>
 <p>如果没有secret对象，那么就会用私钥创建一个Token，用token+CA证书+namespace名称产生secret，放入对应serviceaccount中。</p>
 <p>此外token controller监听secret对象和处理。</p>
-<h2 id="Scheduler原理"><a href="#Scheduler原理" class="headerlink" title="Scheduler原理"></a>Scheduler原理</h2><p>承上：负责接收Controller manager创建的新Pod，为他确定目标Node</p>
+<h1 id="Scheduler原理"><a href="#Scheduler原理" class="headerlink" title="Scheduler原理"></a>Scheduler原理</h1><p>承上：负责接收Controller manager创建的新Pod，为他确定目标Node</p>
 <p>启下：安置ok后，Node上kubelet接管后续工作。</p>
 <p>具体的，Scheduler通过调度算法和策略把待调度Pod列表中的Pod从可用Node列表里选择合适Node并调度过去，同时更新到etcd。</p>
 <p>设计待调度Pod列表，可用Node列表，调度算法和策略三大内容。</p>
 <p>!!!调度流程两步：预选调度(列出合适候选,预选策略)+确定最优节点(优选策略,高分者胜出)，实际上用了预选策略+优选策略。</p>
 <p>预选策略：NoDiskConflict(gcePersistentDisk和AWSElasticBlovkStore两类挂在卷类型,看看有没有磁盘冲突)/PodFitsResource(是否满足Pod需求,如内存CPU资源)/PodSelectorMatches(Pod的nodeSelector标签选择器要求是否满足,如node必须要被打伤某个k-v标签值才能作为目标)/PodFitsHost(nodeName域指定的节点名称是否一致)/CheckNodeLablePresence/CheckServiceAffinity/PodFitsPorts(端口列表是否占用)</p>
 <p>优选策略:LeastRequestPriority(选出资源CPU和内存消耗最小的节点,计算使用率的剩余量之和)/CalculateNodeLabelPriority(对配置的标签的匹配度)/BalencedResourceAllocation(选出CPU和内存使用率最均衡的,计算二者差值,要使用率尽可能近,不能不平衡)</p>
-<h2 id="kubelet原理"><a href="#kubelet原理" class="headerlink" title="kubelet原理"></a>kubelet原理</h2><p>每个Node都有kubelet进程，用于处理下发到本节点的任务，管理Pod和容器。每个kubelet都在API Server注册节点信息，定期汇报，使用cAdvisor监控容器和节点资源。</p>
+<h1 id="kubelet原理"><a href="#kubelet原理" class="headerlink" title="kubelet原理"></a>kubelet原理</h1><p>每个Node都有kubelet进程，用于处理下发到本节点的任务，管理Pod和容器。每个kubelet都在API Server注册节点信息，定期汇报，使用cAdvisor监控容器和节点资源。</p>
 <ul>
 <li>节点管理</li>
 </ul>
@@ -365,14 +368,14 @@
 <li>cAdvisor监控资源</li>
 </ul>
 <p>4194端口暴露一个简单UI。弃用，想用可以用daemonSet新建一个cadvisor。现在监控用metrics server和custom metrics。</p>
-<h2 id="kube-proxy"><a href="#kube-proxy" class="headerlink" title="kube-proxy"></a>kube-proxy</h2><p>Service是对一组Pod的抽象，创建Service时会创建虚拟IP，客户端访问虚拟IP，Service把请求转发到后端Pod。Service的作用实际上就是kube-proxy完成的。</p>
+<h1 id="kube-proxy"><a href="#kube-proxy" class="headerlink" title="kube-proxy"></a>kube-proxy</h1><p>Service是对一组Pod的抽象，创建Service时会创建虚拟IP，客户端访问虚拟IP，Service把请求转发到后端Pod。Service的作用实际上就是kube-proxy完成的。</p>
 <p>proxy是Service的代理+负载均衡器。核心功能就是把某个到Service的访问转发到后端多个Pod实例上。Service的Cluster IP和NodePort等就是proxy通过iptables的NAT转换实现的。</p>
 <p>proxy目前的默认模式是iptables模式，核心功能变成：watch apiserver接口追踪service和endpoint变化，更新iptables信息，客户的请求流量通过iptables的NAT网络地址转换(IP端口名称的映射关系)直接路由到目标Pod。</p>
 <p>iptables模式完全在内核态，不用专户单到用户态的proxy，所以性能更强。</p>
 <p>缺陷：service，pod大量增加，规则数大，性能下降，所以引入了IPVS，即IP虚拟服务器，提供高性能负载均衡，可以无限规模扩张，数据结构用哈希表。</p>
-<h3 id="IPVS"><a href="#IPVS" class="headerlink" title="IPVS"></a>IPVS</h3><h2 id="集群安全"><a href="#集群安全" class="headerlink" title="集群安全"></a>集群安全</h2><p>包括认证授权，准入控制，secret机制。</p>
+<h2 id="IPVS"><a href="#IPVS" class="headerlink" title="IPVS"></a>IPVS</h2><h1 id="集群安全"><a href="#集群安全" class="headerlink" title="集群安全"></a>集群安全</h1><p>包括认证授权，准入控制，secret机制。</p>
 <p>逻辑是认证鉴权-准入控制-得到响应。</p>
-<h2 id="API-server认证管理"><a href="#API-server认证管理" class="headerlink" title="API server认证管理"></a>API server认证管理</h2><p>如何认证识别客户端身份？访问权限怎么授予？即认证+授权问题</p>
+<h1 id="API-server认证管理"><a href="#API-server认证管理" class="headerlink" title="API server认证管理"></a>API server认证管理</h1><p>如何认证识别客户端身份？访问权限怎么授予？即认证+授权问题</p>
 <p>提供三种级别认证方式：</p>
 <ol>
 <li><p>HTTPS CA(可信第三方)根证书认证,和HTTPS的SSL认证差不多</p>
@@ -382,7 +385,7 @@
 <li><p>HTTP base认证,用户名+冒号+密码用BASE64算法编码后放在头认证域，发给服务端。</p>
 </li>
 </ol>
-<h2 id="API-Server授权管理"><a href="#API-Server授权管理" class="headerlink" title="API Server授权管理"></a>API Server授权管理</h2><p>给不同用户不同的访问权限:</p>
+<h1 id="API-Server授权管理"><a href="#API-Server授权管理" class="headerlink" title="API Server授权管理"></a>API Server授权管理</h1><p>给不同用户不同的访问权限:</p>
 <ul>
 <li><p>AlwaysDeny</p>
 </li>
@@ -409,20 +412,20 @@
 <ul>
 <li>Node专用于kubelet请求访问控制</li>
 </ul>
-<h2 id="准入控制"><a href="#准入控制" class="headerlink" title="准入控制"></a>准入控制</h2><p>准入控制链检查，通过检查才能得到相应。</p>
-<h2 id="Service-Account"><a href="#Service-Account" class="headerlink" title="Service Account"></a>Service Account</h2><p>一种账号，给Pod里的进程用，属于当前namespace。这些进程要去访问API Server时，就用serviceaccount来做身份认证。Service Account包含多个secret对象，是用于不同访问目标的身份鉴权协助。</p>
-<h2 id="Secret-私密凭据"><a href="#Secret-私密凭据" class="headerlink" title="Secret 私密凭据"></a>Secret 私密凭据</h2><p>保管私密数据，密码、token、keys等。放在secret对象里更安全，便于使用和分发。</p>
+<h1 id="准入控制"><a href="#准入控制" class="headerlink" title="准入控制"></a>准入控制</h1><p>准入控制链检查，通过检查才能得到相应。</p>
+<h1 id="Service-Account"><a href="#Service-Account" class="headerlink" title="Service Account"></a>Service Account</h1><p>一种账号，给Pod里的进程用，属于当前namespace。这些进程要去访问API Server时，就用serviceaccount来做身份认证。Service Account包含多个secret对象，是用于不同访问目标的身份鉴权协助。</p>
+<h1 id="Secret-私密凭据"><a href="#Secret-私密凭据" class="headerlink" title="Secret 私密凭据"></a>Secret 私密凭据</h1><p>保管私密数据，密码、token、keys等。放在secret对象里更安全，便于使用和分发。</p>
 <p>怎么用？创建pod时指定serviceaccount从而自动使用secret/挂载secret到pod(volume)/指定pod的imagepullsecret额外引用这个secret</p>
-<h2 id="K8S-网络原理"><a href="#K8S-网络原理" class="headerlink" title="K8S 网络原理"></a>K8S 网络原理</h2><p>每个Pod有一个独立的ip地址，所有pod都在联通的网路空间里，pod内容器共享一个网络堆栈(pause容器+业务容器，从而pod内容器可以用localhost访问对方端口)。</p>
+<h1 id="K8S-网络原理"><a href="#K8S-网络原理" class="headerlink" title="K8S 网络原理"></a>K8S 网络原理</h1><p>每个Pod有一个独立的ip地址，所有pod都在联通的网路空间里，pod内容器共享一个网络堆栈(pause容器+业务容器，从而pod内容器可以用localhost访问对方端口)。</p>
 <p>K8S网络和Dokcer动态端口映射方式的区别？</p>
 <p>Docker的更复杂，端口管理复杂，访问者看到的IP和实际IP不同，应用配置很复杂。</p>
 <p>为了支持这个简单K8S模型，要求所有容器/节点都可以不用NAT时和别的容器/节点通信，容器的地址和别人看到的地址是同一个。</p>
-<h2 id="Docker网络基础"><a href="#Docker网络基础" class="headerlink" title="Docker网络基础"></a>Docker网络基础</h2><h3 id="网络命名空间"><a href="#网络命名空间" class="headerlink" title="网络命名空间"></a>网络命名空间</h3><p>通过网络命名空间把独立的协议栈隔离到不同namespace中，相互独立、</p>
+<h1 id="Docker网络基础"><a href="#Docker网络基础" class="headerlink" title="Docker网络基础"></a>Docker网络基础</h1><h2 id="网络命名空间"><a href="#网络命名空间" class="headerlink" title="网络命名空间"></a>网络命名空间</h2><p>通过网络命名空间把独立的协议栈隔离到不同namespace中，相互独立、</p>
 <p>各自namespace可以有自己的独立路由表，iptables。</p>
 <p>对于独立的各个网络协议栈，只能通过veth设备对(veth pair)来做通信，连接两个网络协议栈。veth pair就是为了在不同网络namespace中通信创建的，成对出现。</p>
 <p>网络连起来了，那么怎么把主机间通信连起来？用网桥，一个二层虚拟网络设备，使得网络接口间报文能互相转发。通过mac地址识别转发。</p>
 <p>可以通信了，那怎么对特定数据包进行处理？引入Netfilter和iptables。</p>
-<h3 id="Docker网络模式"><a href="#Docker网络模式" class="headerlink" title="Docker网络模式"></a>Docker网络模式</h3><p>4类：</p>
+<h2 id="Docker网络模式"><a href="#Docker网络模式" class="headerlink" title="Docker网络模式"></a>Docker网络模式</h2><p>4类：</p>
 <ul>
 <li><p>host(–net=host)</p>
 </li>
@@ -435,7 +438,7 @@
 </ul>
 <p>k8s下只使用这个。</p>
 <p>dockerdaemon第一次启动，创建虚拟网桥docker0，给他分配一个子网，对于docker创建的每个容器，都会创建一个虚拟的veth设备对，一段在网桥，一端用网络namespace映射到容器内的eth0设备，给eth0分配一个IP地址。</p>
-<h2 id="K8S网络实现"><a href="#K8S网络实现" class="headerlink" title="K8S网络实现"></a>K8S网络实现</h2><p>这个比docker复杂多了</p>
+<h1 id="K8S网络实现"><a href="#K8S网络实现" class="headerlink" title="K8S网络实现"></a>K8S网络实现</h1><p>这个比docker复杂多了</p>
 <p>需要解决容器间/Pod间/pod和service间/集群外和集群内之间的通信。</p>
 <ul>
 <li>容器间</li>
@@ -448,7 +451,7 @@
 <p>不同Node上的Pod，那只能通过宿主机的物理网卡进行了，必须通过主机的IP地址进行寻址和通信。所以要对Pod的IP分配进行规划，不能有冲突，将Pod的IP和Node的IP关联起来。</p>
 <p>不同Node间就变成了，Pod1-&gt;Pod1eth0网卡-&gt;Node1的docker0网桥-&gt;Node1的物理网卡-&gt;Node2的物理网卡-&gt;Node2的docker0网桥-&gt;Pod2的eth0网卡-&gt;Pod2的具体容器。</p>
 <p>而endpoint都会存在etcd中。</p>
-<h2 id="实例-K8S-Pod创建过程中发生了什么"><a href="#实例-K8S-Pod创建过程中发生了什么" class="headerlink" title="实例: K8S Pod创建过程中发生了什么"></a>实例: K8S Pod创建过程中发生了什么</h2><ul>
+<h1 id="实例-K8S-Pod创建过程中发生了什么"><a href="#实例-K8S-Pod创建过程中发生了什么" class="headerlink" title="实例: K8S Pod创建过程中发生了什么"></a>实例: K8S Pod创建过程中发生了什么</h1><ul>
 <li>kubectl上验证+生成请求给apiserver</li>
 </ul>
 <p>输入kubectl命令后，先执行客户端验证操作。</p>
@@ -517,7 +520,7 @@
 <p>所有网络都配置完成后，接下来就开始真正启动业务容器了！</p>
 <p>首先启动 PodSpec 中定义的 init 容器，然后再启动业务容器。</p>
 <p>至此，Pod就部署在了Node上，并启动了内部的所有容器。</p>
-<h2 id="Pod-状态-status"><a href="#Pod-状态-status" class="headerlink" title="Pod 状态 status"></a>Pod 状态 status</h2><p>Pending（悬决）|Pod 已被 Kubernetes 系统接受，但有一个或者多个容器尚未创建亦未运行。此阶段包括等待 Pod 被调度的时间和通过网络下载镜像的时间<br>Running（运行中）|Pod 已经绑定到了某个节点，Pod 中所有的容器都已被创建。至少有一个容器仍在运行，或者正处于启动或重启状态。<br>Succeeded（成功）|Pod 中的所有容器都已<strong>成功终止</strong>，并且<strong>不会再重启</strong>。<br>Failed（失败）|Pod 中的所有容器都已终止，并且至少有一个容器是因为失败终止。也就是说，容器以非 0 状态退出或者被系统终止。<br>Unknown（未知）|因为某些原因无法取得 Pod 的状态。这种情况通常是因为与 Pod 所在主机通信失败。</p>
+<h1 id="Pod-状态-status"><a href="#Pod-状态-status" class="headerlink" title="Pod 状态 status"></a>Pod 状态 status</h1><p>Pending（悬决）|Pod 已被 Kubernetes 系统接受，但有一个或者多个容器尚未创建亦未运行。此阶段包括等待 Pod 被调度的时间和通过网络下载镜像的时间<br>Running（运行中）|Pod 已经绑定到了某个节点，Pod 中所有的容器都已被创建。至少有一个容器仍在运行，或者正处于启动或重启状态。<br>Succeeded（成功）|Pod 中的所有容器都已<strong>成功终止</strong>，并且<strong>不会再重启</strong>。<br>Failed（失败）|Pod 中的所有容器都已终止，并且至少有一个容器是因为失败终止。也就是说，容器以非 0 状态退出或者被系统终止。<br>Unknown（未知）|因为某些原因无法取得 Pod 的状态。这种情况通常是因为与 Pod 所在主机通信失败。</p>
 <h1 id="Kubernetes-内容"><a href="#Kubernetes-内容" class="headerlink" title="Kubernetes 内容"></a>Kubernetes 内容</h1><ul>
 <li>控制平面Master组件：</li>
 </ul>
@@ -545,7 +548,7 @@
 <p>metrics相关</p>
 <p>集群层面日志</p>
 <p>日至存储相关</p>
-<h2 id="K8S对象"><a href="#K8S对象" class="headerlink" title="K8S对象"></a>K8S对象</h2><p>Kubernetes 对象 是持久化的实体，通过.yaml创建。 Kubernetes 使用这些实体去表示整个集群的状态。特别地，它们描述了如下信息：</p>
+<h1 id="K8S对象"><a href="#K8S对象" class="headerlink" title="K8S对象"></a>K8S对象</h1><p>Kubernetes 对象 是持久化的实体，通过.yaml创建。 Kubernetes 使用这些实体去表示整个集群的状态。特别地，它们描述了如下信息：</p>
 <ul>
 <li><p>哪些容器化应用在运行（以及在哪些节点上），通过matchlabels等字段</p>
 </li>
@@ -554,12 +557,12 @@
 <li><p>关于应用运行时表现的策略，比如重启策略、升级策略，以及容错策略，如滚动升级等</p>
 </li>
 </ul>
-<h3 id="yaml必须字段"><a href="#yaml必须字段" class="headerlink" title="yaml必须字段"></a>yaml必须字段</h3><p>需要配置如下的字段：</p>
+<h2 id="yaml必须字段"><a href="#yaml必须字段" class="headerlink" title="yaml必须字段"></a>yaml必须字段</h2><p>需要配置如下的字段：</p>
 <p>apiVersion - 创建该对象所使用的 Kubernetes API 的版本</p>
 <p>kind - 想要创建的对象的类别，deployment/service等</p>
 <p>metadata - 帮助<strong>唯一性标识对象的一些数据</strong>，包括一个 name 字符串、UID 和可选的 namespace，如name:test</p>
 <p>你也需要提供对象的 <strong>spec</strong> 字段。可以包含label等特定内容，包含replicas指定副本数目，包含template指定模板（包括容器的镜像/端口等，容器metadata如labels等）</p>
-<h3 id="对象管理"><a href="#对象管理" class="headerlink" title="对象管理"></a>对象管理</h3><p>一般都是用</p>
+<h2 id="对象管理"><a href="#对象管理" class="headerlink" title="对象管理"></a>对象管理</h2><p>一般都是用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f test.yaml&#x2F;&#x2F;创建</span><br><span class="line">kubectl apply -f test.yaml&#x2F;&#x2F;更新</span><br><span class="line">kubectl delete -f test.yaml&#x2F;&#x2F;删除</span><br><span class="line">kubectl diff -f test.yaml&#x2F;&#x2F;查看更改</span><br></pre></td></tr></table></figure>
 <p>使用matadata中的内容唯一标识数据，而其他内容需要使用它的时候，会使用这个k-v对的值来选择。</p>
 <p>一个 Service 指向的一组 pods 是由标签选择算符定义的。同样，一个 ReplicationController 应该管理的 pods 的数量也是由标签选择算符定义的。</p>
@@ -567,12 +570,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">selector:</span><br><span class="line">    component: redis</span><br></pre></td></tr></table></figure>
 <p>此外，metadata中还可以加上注解annotation，来添加一些额外信息</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: annotations-demo</span><br><span class="line">  annotations:</span><br><span class="line">    imageregistry: &quot;https:&#x2F;&#x2F;hub.docker.com&#x2F;&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="节点Node"><a href="#节点Node" class="headerlink" title="节点Node"></a>节点Node</h2><p>向 API 服务器添加节点的方式主要有两种：</p>
+<h1 id="节点Node"><a href="#节点Node" class="headerlink" title="节点Node"></a>节点Node</h1><p>向 API 服务器添加节点的方式主要有两种：</p>
 <ol>
 <li>节点上的 kubelet 向控制面执行自注册；</li>
 <li>你，或者别的什么人，手动添加一个 Node 对象。</li>
 </ol>
-<h3 id="节点状态"><a href="#节点状态" class="headerlink" title="节点状态"></a>节点状态</h3><ul>
+<h2 id="节点状态"><a href="#节点状态" class="headerlink" title="节点状态"></a>节点状态</h2><ul>
 <li>地址</li>
 </ul>
 <p>HostName：由节点的内核设置。可以通过 kubelet 的 –hostname-override 参数覆盖。<br>ExternalIP：通常是节点的可外部路由（从集群外可访问）的 IP 地址。<br>InternalIP：通常是节点的仅可在集群内部路由的 IP 地址。</p>
@@ -580,10 +583,10 @@
 <li>状况</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;conditions&quot;: [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;type&quot;: &quot;Ready&quot;,</span><br><span class="line">    &quot;status&quot;: &quot;True&quot;,</span><br><span class="line">    &quot;reason&quot;: &quot;KubeletReady&quot;,</span><br><span class="line">    &quot;message&quot;: &quot;kubelet is posting ready status&quot;,</span><br><span class="line">    &quot;lastHeartbeatTime&quot;: &quot;2019-06-05T18:38:35Z&quot;,</span><br><span class="line">    &quot;lastTransitionTime&quot;: &quot;2019-06-05T11:41:27Z&quot;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h3 id="控制面到节点通信"><a href="#控制面到节点通信" class="headerlink" title="控制面到节点通信"></a>控制面到节点通信</h3><p>Kubernetes 采用的是中心辐射型（Hub-and-Spoke）API 模式。 </p>
+<h2 id="控制面到节点通信"><a href="#控制面到节点通信" class="headerlink" title="控制面到节点通信"></a>控制面到节点通信</h2><p>Kubernetes 采用的是中心辐射型（Hub-and-Spoke）API 模式。 </p>
 <p>所有从集群（或所运行的 Pods）发出的 API 调用都终止于 apiserver（其它控制面组件都没有被设计为可暴露远程服务）。 </p>
 <p>apiserver 被配置为在一个安全的 HTTPS 端口（443）上监听远程连接请求， 并启用一种或多种形式的客户端身份认证机制。 </p>
-<h3 id="控制面到节点"><a href="#控制面到节点" class="headerlink" title="控制面到节点"></a>控制面到节点</h3><p>有两种主要的通信路径。 第一种是从 apiserver 到集群中每个节点上运行的 kubelet 进程。 第二种是从 apiserver 通过它的代理功能连接到任何节点、Pod 或者服务。</p>
+<h2 id="控制面到节点"><a href="#控制面到节点" class="headerlink" title="控制面到节点"></a>控制面到节点</h2><p>有两种主要的通信路径。 第一种是从 apiserver 到集群中每个节点上运行的 kubelet 进程。 第二种是从 apiserver 通过它的代理功能连接到任何节点、Pod 或者服务。</p>
 <ul>
 <li>API 服务器到 kubelet</li>
 </ul>
@@ -605,10 +608,10 @@
 <p>不过这些连接既不会验证 HTTPS 末端提供的证书，也不会提供客户端证书。 </p>
 <p>因此，虽然连接是加密的，仍无法提供任何完整性保证。 </p>
 <p>这些连接 目前还不能安全地 在非受信网络或公共网络上运行。</p>
-<h3 id="Pods"><a href="#Pods" class="headerlink" title="Pods"></a>Pods</h3><p>Pod 是可以在 Kubernetes 中创建和管理的、最小的可部署的计算单元。</p>
+<h2 id="Pods"><a href="#Pods" class="headerlink" title="Pods"></a>Pods</h2><p>Pod 是可以在 Kubernetes 中创建和管理的、最小的可部署的计算单元。</p>
 <p>Pod 的共享上下文包括一组 Linux namespace、控制组（cgroup）和一些其他的用来隔离 Docker 容器的技术。 在 Pod 的上下文中，每个独立的应用可能会进一步实施隔离。</p>
 <p>就 Docker 概念的术语而言，Pod 类似于共享名字空间和文件系统卷的一组 Docker 容器。</p>
-<h4 id="pause容器"><a href="#pause容器" class="headerlink" title="pause容器"></a>pause容器</h4><p>Pod = Pause容器 + 其他业务容器。</p>
+<h2 id="pause容器"><a href="#pause容器" class="headerlink" title="pause容器"></a>pause容器</h2><p>Pod = Pause容器 + 其他业务容器。</p>
 <p>每个Pod里运行着一个特殊的被称之为Pause的容器，其他容器则为业务容器，这些<strong>业务容器共享Pause容器的网络栈和Volume挂载卷</strong></p>
 <p>pause容器，全称infrastructure container（又叫infra）基础容器</p>
 <p>pause容器的PID是1。kubernetes中的<strong>pause容器主要为每个业务容器提供以下功能，为其他业务容器提供各类namespace资源</strong>：</p>
@@ -617,17 +620,17 @@
 <p>IPC命名空间：Pod中的多个容器能够使用SystemV IPC或POSIX消息队列进行通信。</p>
 <p>UTS命名空间：Pod中的多个容器共享一个主机名；Volumes（共享存储卷）：</p>
 <p>Pod中的各个容器可以访问在Pod级别定义的Volumes。</p>
-<h4 id="静态Pod"><a href="#静态Pod" class="headerlink" title="静态Pod"></a>静态Pod</h4><p>仅存在特定Node上的Pod，无法通过api server控制，无法与RC/deployment/daemonset关联，kubectl无法对其进行健康检查，由kubectl创建，总在kubectl所在的Node上运行。</p>
+<h2 id="静态Pod"><a href="#静态Pod" class="headerlink" title="静态Pod"></a>静态Pod</h2><p>仅存在特定Node上的Pod，无法通过api server控制，无法与RC/deployment/daemonset关联，kubectl无法对其进行健康检查，由kubectl创建，总在kubectl所在的Node上运行。</p>
 <p>主要是把kubectl的启动参数–config=yaml存放位置，重启kubectl，就可以创建静态pod。或者通过–manifest-url=目标yaml网址来创建，kubectl定期扫描两种方式的位置，有内容就创建静态pod。</p>
 <p>只能通过把对应位置的内容rm掉才可以删除，否则直接kubectl删除的时候会变成pending状态，等待中，不会被删除。</p>
-<h4 id="共享卷"><a href="#共享卷" class="headerlink" title="共享卷"></a>共享卷</h4><p>pod中的容器共享本地存储卷，container1和container2都可以使用。</p>
+<h2 id="共享卷"><a href="#共享卷" class="headerlink" title="共享卷"></a>共享卷</h2><p>pod中的容器共享本地存储卷，container1和container2都可以使用。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">volumeMounts:</span><br><span class="line">- name: logs</span><br><span class="line">  mountPath: &#x2F;usr&#x2F;local&#x2F;log</span><br></pre></td></tr></table></figure>
-<h4 id="生命周期和重启策略"><a href="#生命周期和重启策略" class="headerlink" title="生命周期和重启策略"></a>生命周期和重启策略</h4><p>pending|镜像仍未创建或在下载中<br>running|至少有一个容器运行/正在启动/正在重启<br>succeeded|所有容器执行成功后退出，不再重启<br>failed|至少有一个容器退出为失败状态<br>unknown|无法获取pod状态，网络问题等</p>
+<h2 id="生命周期和重启策略"><a href="#生命周期和重启策略" class="headerlink" title="生命周期和重启策略"></a>生命周期和重启策略</h2><p>pending|镜像仍未创建或在下载中<br>running|至少有一个容器运行/正在启动/正在重启<br>succeeded|所有容器执行成功后退出，不再重启<br>failed|至少有一个容器退出为失败状态<br>unknown|无法获取pod状态，网络问题等</p>
 <p>重启策略restartpolicy：</p>
 <p>Always：自动重启<br>onfailure：容器终止且退出码不为0，由kubectl自动重启<br>never：不重启</p>
 <p>重启策略在不同的控制方式下设置不一样：</p>
 <p>RC/daemonset：always，必须保证持续运行<br>job：onfailure/never，因为是全部执行完毕后就结束，所以不重启</p>
-<h4 id="健康检查和服务可用性检查"><a href="#健康检查和服务可用性检查" class="headerlink" title="健康检查和服务可用性检查"></a>健康检查和服务可用性检查</h4><p>主要是用两个探针来实现。</p>
+<h2 id="健康检查和服务可用性检查"><a href="#健康检查和服务可用性检查" class="headerlink" title="健康检查和服务可用性检查"></a>健康检查和服务可用性检查</h2><p>主要是用两个探针来实现。</p>
 <p>livenessProbe：判断容器是否为running状态，是否存活。默认为success，只有设置了才会去探查，根据重启策略重启。</p>
 <p>readnessProbe：判断容器服务是否可用，为ready状态？只有ready才可以对外提供服务，否则的话从service后端的endpoint列表里格里拉出去，避免用户进入服务不可用的pod实例。</p>
 <p>probe实现方法：</p>
@@ -637,7 +640,7 @@
 <p>默认参数：</p>
 <p>initialDelaySeconds：什么时候开始首次检查？</p>
 <p>timeoutSeconds：等待多久后判定为无法提供服务？</p>
-<h4 id="Pod调度-运行节点选择控制"><a href="#Pod调度-运行节点选择控制" class="headerlink" title="Pod调度(运行节点选择控制)"></a>Pod调度(运行节点选择控制)</h4><p>RC(选一个标签) —&gt; RS(选多个标签) —&gt; deployment(更自动的部署)</p>
+<h2 id="Pod调度-运行节点选择控制"><a href="#Pod调度-运行节点选择控制" class="headerlink" title="Pod调度(运行节点选择控制)"></a>Pod调度(运行节点选择控制)</h2><p>RC(选一个标签) —&gt; RS(选多个标签) —&gt; deployment(更自动的部署)</p>
 <p>deployment实际上是通过RS来实现副本自动控制的，所以用deployment。</p>
 <p>调度时可能需要实现以下内容：</p>
 <ol>
@@ -664,11 +667,11 @@
 <li>批处理作业，创建多个Pod来协作，都完成后整个作业结束。也就是一批只做一次的任务的调度怎么做？</li>
 </ol>
 <p>使用Job来做，并延伸出了CronJob。</p>
-<h5 id="deployment"><a href="#deployment" class="headerlink" title="deployment"></a>deployment</h5><p>自动部署+维持副本数量+监控副本数量<br>kind:Deployment<br>spec.replicas指定数量<br>spec.template指定pod模板，如.metadata,.spec.container等</p>
-<h5 id="NodeSelector定向调度"><a href="#NodeSelector定向调度" class="headerlink" title="NodeSelector定向调度"></a>NodeSelector定向调度</h5><p>先对Node打上标签<br> kubectl label nodes <node-name> <label-key>=<label-value></p>
+<h3 id="deployment"><a href="#deployment" class="headerlink" title="deployment"></a>deployment</h3><p>自动部署+维持副本数量+监控副本数量<br>kind:Deployment<br>spec.replicas指定数量<br>spec.template指定pod模板，如.metadata,.spec.container等</p>
+<h3 id="NodeSelector定向调度"><a href="#NodeSelector定向调度" class="headerlink" title="NodeSelector定向调度"></a>NodeSelector定向调度</h3><p>先对Node打上标签<br> kubectl label nodes <node-name> <label-key>=<label-value></p>
 <p>然后在Pod定义中执行nodeselector<br>.spec.template.spec.nodeSelector: zone=north</p>
 <p>会对标签对应的内容挑选一个可用Node进行调度。</p>
-<h5 id="NodeAffinity-节点亲和性调度"><a href="#NodeAffinity-节点亲和性调度" class="headerlink" title="NodeAffinity:节点亲和性调度"></a>NodeAffinity:节点亲和性调度</h5><p>亲和性调度这种调度方式更具表达力。</p>
+<h3 id="NodeAffinity-节点亲和性调度"><a href="#NodeAffinity-节点亲和性调度" class="headerlink" title="NodeAffinity:节点亲和性调度"></a>NodeAffinity:节点亲和性调度</h3><p>亲和性调度这种调度方式更具表达力。</p>
 <p>使用软限制、优先采用等方式，代替硬限制。</p>
 <p>节点亲和性<strong>可以依据节点上其他Pod的标签来限制</strong>，而不是非要用当前Pod来做限制，所以可以<strong>描述Pod之间的亲和或互斥关系</strong>。</p>
 <p>NodeAffinity是用来替换NodeSelector的，有两种表达方式：</p>
@@ -688,23 +691,23 @@
 <p>nodeSelector+nodeAffinity，则两个都要满足</p>
 <p>nodeAffinity指定多个nodeSelectorTerms，满足一个Terms就好</p>
 <p>nodeSelectorTerms有多个matchExpressions，一个节点必须满足所有expression</p>
-<h5 id="PodAffinity"><a href="#PodAffinity" class="headerlink" title="PodAffinity"></a>PodAffinity</h5><p>根据节点正在运行的Pod的标签而不是Node标签来做调度，要求对Node和Pod都进行匹配。</p>
+<h3 id="PodAffinity"><a href="#PodAffinity" class="headerlink" title="PodAffinity"></a>PodAffinity</h3><p>根据节点正在运行的Pod的标签而不是Node标签来做调度，要求对Node和Pod都进行匹配。</p>
 <p><strong>可以描述为：如果在具有标签X(区域标签，通过topologyKey指定)的Node上运行一个或多个符合条件Y的Pod，那么Pod应该运行在这个Node上。</strong></p>
 <p>设置参数和Node一样，也是2个：required during scheduling ingnored during excecution和preferred during scheduling ingnored during excecution</p>
 <p>亲和性案例</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 制定一个security&#x3D;SI的亲和标签，同时topologyKey&#x3D;kubernetes.io&#x2F;hostname，即Node要有这个topologyKey标签</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">	name:affinity</span><br><span class="line">spec:</span><br><span class="line">	affinity:</span><br><span class="line">		podAffinity:</span><br><span class="line">			requiredduringschedulingingnoredduringexcecution:</span><br><span class="line">			- labelSelector:</span><br><span class="line">				matchExpressions:</span><br><span class="line">				- key: security</span><br><span class="line">					operator: In</span><br><span class="line">					values:</span><br><span class="line">					- S1</span><br><span class="line">			topologyKey: kubernetes.io&#x2F;hostname</span><br></pre></td></tr></table></figure>
 <p>互斥性案例(基本一样，不过是把podAffinity修改一下，改成podAntiAffinity)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 不能放在节点区域标签为hostname的节点上</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">	name:affinity</span><br><span class="line">spec:</span><br><span class="line">	affinity:</span><br><span class="line">		podAntiAffinity:</span><br><span class="line">			requiredduringschedulingingnoredduringexcecution:</span><br><span class="line">			- labelSelector:</span><br><span class="line">				matchExpressions:</span><br><span class="line">				- key: security</span><br><span class="line">					operator: In</span><br><span class="line">					values:</span><br><span class="line">					- S1</span><br><span class="line">			topologyKey: kubernetes.io&#x2F;hostname</span><br></pre></td></tr></table></figure>
-<h5 id="污点-容忍"><a href="#污点-容忍" class="headerlink" title="污点+容忍"></a>污点+容忍</h5><p>Affinity是为了实现Pod调度到某些更好的节点上，Taint相反，他让Node拒绝Pod运行。</p>
+<h3 id="污点-容忍"><a href="#污点-容忍" class="headerlink" title="污点+容忍"></a>污点+容忍</h3><p>Affinity是为了实现Pod调度到某些更好的节点上，Taint相反，他让Node拒绝Pod运行。</p>
 <p>Taint和Toleration一起使用，让Pod避开不合适的Node。</p>
 <p>怎么配合使用？</p>
 <p>给Node加一个Taint属性，如果Pod上声明的Toleration可以容忍这个Taint，那么才可以在这个Node上运行。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; noSchedule表示的是效果，不进行调度，还有noExecute不执行</span><br><span class="line">kubectl taint nodes node1 key&#x3D;value:NoSchedule</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Pod上，指的是能容忍key&#x3D;value:noSchedule的Node。</span><br><span class="line">tolerations:</span><br><span class="line">- key: &quot;key&quot;</span><br><span class="line">	operator: &quot;Equal&quot;</span><br><span class="line">	value: &quot;Equal&quot;</span><br><span class="line">	effect: &quot;NoSchedule&quot;</span><br></pre></td></tr></table></figure>
-<h5 id="DaemonSet：在每个Node上都调度一个Pod"><a href="#DaemonSet：在每个Node上都调度一个Pod" class="headerlink" title="DaemonSet：在每个Node上都调度一个Pod"></a>DaemonSet：在每个Node上都调度一个Pod</h5><p>实例：日志采集程序fluentd，logstach；性能监控程序prometheus node exporter等。</p>
+<h3 id="DaemonSet：在每个Node上都调度一个Pod"><a href="#DaemonSet：在每个Node上都调度一个Pod" class="headerlink" title="DaemonSet：在每个Node上都调度一个Pod"></a>DaemonSet：在每个Node上都调度一个Pod</h3><p>实例：日志采集程序fluentd，logstach；性能监控程序prometheus node exporter等。</p>
 <p>也可以对DaemonSet进行滚动升级，在yaml中添加参数：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">apiVersion</span><br><span class="line">kind: DaemonSet</span><br><span class="line">metadata</span><br><span class="line">spec:</span><br><span class="line">	updateStrategy:</span><br><span class="line">		type: RollingUpdate</span><br></pre></td></tr></table></figure>
-<h5 id="Job批处理"><a href="#Job批处理" class="headerlink" title="Job批处理"></a>Job批处理</h5><p>几种模式：</p>
+<h3 id="Job批处理"><a href="#Job批处理" class="headerlink" title="Job批处理"></a>Job批处理</h3><p>几种模式：</p>
 <ul>
 <li>Job 模块 扩展 模式：</li>
 </ul>
@@ -732,9 +735,9 @@
 <li>并行Job，使用任务队列</li>
 </ul>
 <p>额外设置一个任务队列，存放工作</p>
-<h6 id="CronJob-定时任务"><a href="#CronJob-定时任务" class="headerlink" title="CronJob 定时任务"></a>CronJob 定时任务</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">apiVersion:</span><br><span class="line">kind: CronJob</span><br><span class="line">metadata:</span><br><span class="line">spec:</span><br><span class="line">	schedule: &quot;*&#x2F;1 * * * *&quot; &#x2F;&#x2F;表示每隔1分钟触发任务， a&#x2F;b的含义是第一次触发在a，隔b再触发。</span><br><span class="line">	jobTemplate:</span><br><span class="line">		spec:</span><br></pre></td></tr></table></figure>
+<h3 id="CronJob-定时任务"><a href="#CronJob-定时任务" class="headerlink" title="CronJob 定时任务"></a>CronJob 定时任务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">apiVersion:</span><br><span class="line">kind: CronJob</span><br><span class="line">metadata:</span><br><span class="line">spec:</span><br><span class="line">	schedule: &quot;*&#x2F;1 * * * *&quot; &#x2F;&#x2F;表示每隔1分钟触发任务， a&#x2F;b的含义是第一次触发在a，隔b再触发。</span><br><span class="line">	jobTemplate:</span><br><span class="line">		spec:</span><br></pre></td></tr></table></figure>
 <p>至此，所有的Pod调度器都解释清楚了。</p>
-<h4 id="初始化容器-init-container"><a href="#初始化容器-init-container" class="headerlink" title="初始化容器 init container"></a>初始化容器 init container</h4><p>初始化容器这个容器的存在是为了什么？</p>
+<h2 id="初始化容器-init-container"><a href="#初始化容器-init-container" class="headerlink" title="初始化容器 init container"></a>初始化容器 init container</h2><p>初始化容器这个容器的存在是为了什么？</p>
 <p>是为了在启动应用容器之前启动多个初始化容器，把应用的预置条件配置好。<strong>初始化容器不一样的地方在于他只运行一次</strong>。</p>
 <p>初始化容器和应用容器的不同：</p>
 <ol>
@@ -748,7 +751,7 @@
 <li>Pod的infrastructure容器(也就是pause容器)更新，Pod会重启</li>
 <li>Pod中所有应用容器终止，并且重启策略=always，Pod重启</li>
 </ol>
-<h4 id="重要-Pod升级和回滚-版本控制"><a href="#重要-Pod升级和回滚-版本控制" class="headerlink" title="重要!!!Pod升级和回滚(版本控制)"></a>重要!!!Pod升级和回滚(版本控制)</h4><p>更新服务时需要停止所有服务相关Pod，如果集群过大，这个过程会很复杂，时间长+可能出错。会导致长期的服务不可用，所以才引出了滚动升级功能。</p>
+<h2 id="重要-Pod升级和回滚-版本控制"><a href="#重要-Pod升级和回滚-版本控制" class="headerlink" title="重要!!!Pod升级和回滚(版本控制)"></a>重要!!!Pod升级和回滚(版本控制)</h2><p>更新服务时需要停止所有服务相关Pod，如果集群过大，这个过程会很复杂，时间长+可能出错。会导致长期的服务不可用，所以才引出了滚动升级功能。</p>
 <p>如果是Deployment创建的Pod，可以通过修改dep.yaml中的内容，然后apply，那么就会进行自动更新，如果错误，可以回滚到旧版本。</p>
 <p>可以通过</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout status deployment&#x2F;depname</span><br></pre></td></tr></table></figure>
@@ -782,7 +785,7 @@
 <p>但是两个不同：1.不支持查看DS的更新记录2.回滚不能直接通过kubectl rollback指令执行(因为看不了更新记录)，只能重新提交旧版本apply</p>
 <p>StatefulSet的更新策略：</p>
 <p>也逐渐支持OnDelete、RollingUpdate、partition策略，能保留更新历史，可直接回滚历史版本。</p>
-<h4 id="Pod扩缩容-副本控制"><a href="#Pod扩缩容-副本控制" class="headerlink" title="Pod扩缩容(副本控制)"></a>Pod扩缩容(副本控制)</h4><p>手动修改deployment的spec.relicas指标</p>
+<h2 id="Pod扩缩容-副本控制"><a href="#Pod扩缩容-副本控制" class="headerlink" title="Pod扩缩容(副本控制)"></a>Pod扩缩容(副本控制)</h2><p>手动修改deployment的spec.relicas指标</p>
 <p>或者使用自动扩容机制(注意HPA的探测周期可调)</p>
 <p>早期的自动扩缩容数据来源于Heapster，heapster可以理解为一个数据收集器，他收集Node上的cadvisor数据。</p>
 <p>HPA工作原理：</p>
@@ -806,7 +809,7 @@
 </ul>
 <p>预先部署自定义的Metrics server，可以用prometheus、Azure的Adapter自定义实现。</p>
 <p>架构图实际上就是答辩ppt里的多色图：Prometheus-&gt;custom metrics server-&gt;metrics aggregator-&gt;API server-&gt;HPA-&gt;Deployment-&gt;Pod调整</p>
-<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>为一组有相同功能的容器应用提供统一的入口地址，把请求分发到后端的应用上。</p>
+<h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><p>为一组有相同功能的容器应用提供统一的入口地址，把请求分发到后端的应用上。</p>
 <p>主要是通过selector把相应的deployment等内容选中组合在一个入口。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;必须存在的字段</span><br><span class="line">apiVersion:</span><br><span class="line">kind:Service</span><br><span class="line">metadata:</span><br><span class="line">	name:</span><br><span class="line">	namespace:</span><br><span class="line">spec:</span><br><span class="line">	selector:[]</span><br><span class="line">	type:</span><br><span class="line">	cluster IP:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>一开始是直接通过containerPort设置提供服务的容器端口，但是存在问题。</p>
@@ -828,12 +831,12 @@
 <li> Service多端口</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">spec:</span><br><span class="line">	ports:</span><br><span class="line">	- name:</span><br><span class="line">	  port:</span><br><span class="line">	  protocol:</span><br><span class="line">	- name:</span><br><span class="line">	  port:</span><br><span class="line">	  protocol:</span><br></pre></td></tr></table></figure>
-<h4 id="外部访问Pod或Service"><a href="#外部访问Pod或Service" class="headerlink" title="外部访问Pod或Service"></a>外部访问Pod或Service</h4><p>在Pod的yaml中指定spec.template.containers.ports.hostPort</p>
+<h2 id="外部访问Pod或Service"><a href="#外部访问Pod或Service" class="headerlink" title="外部访问Pod或Service"></a>外部访问Pod或Service</h2><p>在Pod的yaml中指定spec.template.containers.ports.hostPort</p>
 <p>不常用，多副本时会冲突。</p>
-<h4 id="Service端口映射到物理机"><a href="#Service端口映射到物理机" class="headerlink" title="Service端口映射到物理机"></a>Service端口映射到物理机</h4><p>设置Service的spec.ports.nodePort，默认在30000~32767之间选一个。</p>
+<h2 id="Service端口映射到物理机"><a href="#Service端口映射到物理机" class="headerlink" title="Service端口映射到物理机"></a>Service端口映射到物理机</h2><p>设置Service的spec.ports.nodePort，默认在30000~32767之间选一个。</p>
 <p>对应的防火墙上也要设置到权限，使得外部能访问。才能用物理机IP:nodePort进行访问。</p>
-<h3 id="DNS服务"><a href="#DNS服务" class="headerlink" title="DNS服务"></a>DNS服务</h3><p>集群内是通过ClusterIP进行访问的，这个对应的映射关系由集群内的DNS服务提供。目前采用的是CoreDNS。</p>
-<h3 id="Ingress-重要-服务发现和负载均衡"><a href="#Ingress-重要-服务发现和负载均衡" class="headerlink" title="Ingress(重要,服务发现和负载均衡)"></a>Ingress(重要,服务发现和负载均衡)</h3><p>Service暴露端口有个问题，如果Service很多，那么要开放很多端口，怎么管理？</p>
+<h2 id="DNS服务"><a href="#DNS服务" class="headerlink" title="DNS服务"></a>DNS服务</h2><p>集群内是通过ClusterIP进行访问的，这个对应的映射关系由集群内的DNS服务提供。目前采用的是CoreDNS。</p>
+<h2 id="Ingress-重要-服务发现和负载均衡"><a href="#Ingress-重要-服务发现和负载均衡" class="headerlink" title="Ingress(重要,服务发现和负载均衡)"></a>Ingress(重要,服务发现和负载均衡)</h2><p>Service暴露端口有个问题，如果Service很多，那么要开放很多端口，怎么管理？</p>
 <p>引入Ingress，定义一个Ingress策略+Ingress Controller(相当于边缘路由器)就好了。</p>
 <ol>
 <li>部署ingress Controller</li>
@@ -851,7 +854,7 @@
 <p>Serverless云计算平台保证该主机提供应用正常运行所需的计算资源。</p>
 <p>在访问量升高时，云计算平台动态地增加应用的部署实例。当应用空闲一段时间后，云计算平台自动将应用从主机中卸载，并回收资源。</p>
 <p>用户之所以不用再关注服务器是因为底层的云计算平台完成了大量的自动化工作。</p>
-<h2 id="FaaS与BaaS"><a href="#FaaS与BaaS" class="headerlink" title="FaaS与BaaS"></a>FaaS与BaaS</h2><p>目前业界的各类Serverless实现按功能而言，主要为应用服务提供了两个方面的支持：函数即服务（Function as a Service，FaaS）以及后台即服务（Backend as a Service，BaaS）。</p>
+<h1 id="FaaS与BaaS"><a href="#FaaS与BaaS" class="headerlink" title="FaaS与BaaS"></a>FaaS与BaaS</h1><p>目前业界的各类Serverless实现按功能而言，主要为应用服务提供了两个方面的支持：函数即服务（Function as a Service，FaaS）以及后台即服务（Backend as a Service，BaaS）。</p>
 <ul>
 <li>FaaS</li>
 </ul>
@@ -866,7 +869,7 @@
 <p>BaaS涵盖的范围很广泛，包含任何应用所依赖的服务。AWS的DynamoDB数据库就是DBaaS的一个例子。用户按需申请使用数据库服务，而无须关注数据库的运维和缩扩容。数据库的运维完全由服务提供方AWS负责。</p>
 <p>要实现完整的Serverless架构，用户必须结合FaaS和BaaS的功能，使得应用整体的系统架构实现Serverless化，最大化地实现Serverless架构所承诺带来的价值。</p>
 <p>因此，一个完整的Serverless实现，必须同时提供FaaS和BaaS两个方面的功能。</p>
-<h2 id="Serverless架构下的应用与传统架构下的应用的异同"><a href="#Serverless架构下的应用与传统架构下的应用的异同" class="headerlink" title="Serverless架构下的应用与传统架构下的应用的异同"></a>Serverless架构下的应用与传统架构下的应用的异同</h2><ul>
+<h1 id="Serverless架构下的应用与传统架构下的应用的异同"><a href="#Serverless架构下的应用与传统架构下的应用的异同" class="headerlink" title="Serverless架构下的应用与传统架构下的应用的异同"></a>Serverless架构下的应用与传统架构下的应用的异同</h1><ul>
 <li><p>传统架构</p>
 <div align="center"> <img src="https://github.com/Liccol/Liccol.github.io/blob/master/img/kubernetes-1.webp" width=""> </div><br>
 </li>
@@ -885,7 +888,7 @@
 <p>用户也无须运维业务逻辑所消耗的计算资源，Serverless架构的应用所依赖的数据库从具体的特定数据库实例，变成了数据库服务。用户无须关注数据库所消耗的计算资源的运维。</p>
 <p>在Serverless架构下，由于应用的逻辑分散成了若干个函数，推荐通过API网关对这些函数逻辑进行统一的管控（如流量控制、安全管控、版本管理等）。</p>
 <p>在完备的Serverless平台上，API网关也会作为一种用户可以快速消费的服务而存在。在Serverless架构下，具体的主机资源不再是用户关注的对象，不存于应用架构图中。取而代之的是Serverless平台及其子服务，如FaaS和各类BaaS服务。</p>
-<h2 id="Serveless技术特点"><a href="#Serveless技术特点" class="headerlink" title="Serveless技术特点"></a>Serveless技术特点</h2><ul>
+<h1 id="Serveless技术特点"><a href="#Serveless技术特点" class="headerlink" title="Serveless技术特点"></a>Serveless技术特点</h1><ul>
 <li>按需加载</li>
 </ul>
 <p>在Serverless架构下，应用的加载（load）和卸载（unload）由Serverless云计算平台控制。这意味着应用不总是一直在线的。只有当有请求到达或者有事件发生时才会被部署和启动。</p>
@@ -916,7 +919,7 @@
 <p>在Server-less架构下的应用的依赖应该服务化和无服务器化，也就是实现BaaS。</p>
 <p>所有应用依赖的服务都是一个个Backend Service，应用通过BaaS方便获取，而无须关心底层细节。</p>
 <p>和FaaS一样，BaaS是Serverless架构实现的另一个重要组件。</p>
-<h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><ul>
+<h1 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h1><ul>
 <li>控制力</li>
 </ul>
 <p>对于一些希望掌控底层计算资源的应用场景，并不是最合适的选择。</p>
@@ -940,8 +943,8 @@
 <li>技术成熟度</li>
 </ul>
 <p>目前Serverless相关平台、工具和框架还处在一个不断变化和演进的阶段，开发和调试的用户体验还需要进一步提升。Serverless相关的文档和资料相对比较少，深入了解Serverless架构的架构师、开发人员和运维人员也相对较少</p>
-<h2 id="相关技术"><a href="#相关技术" class="headerlink" title="相关技术"></a>相关技术</h2><p>按所管控的计算资源的范围来划分，云计算模式可以分为基础架构即服务（Infrastructure as a Service）、平台即服务（Platform as a Service，PaaS）以及软件即服务（Software as a Service，SaaS）。</p>
-<h3 id="IaaS、PaaS与SaaS"><a href="#IaaS、PaaS与SaaS" class="headerlink" title="IaaS、PaaS与SaaS"></a>IaaS、PaaS与SaaS</h3><ul>
+<h1 id="相关技术"><a href="#相关技术" class="headerlink" title="相关技术"></a>相关技术</h1><p>按所管控的计算资源的范围来划分，云计算模式可以分为基础架构即服务（Infrastructure as a Service）、平台即服务（Platform as a Service，PaaS）以及软件即服务（Software as a Service，SaaS）。</p>
+<h2 id="IaaS、PaaS与SaaS"><a href="#IaaS、PaaS与SaaS" class="headerlink" title="IaaS、PaaS与SaaS"></a>IaaS、PaaS与SaaS</h2><ul>
 <li>IaaS(购买云存储服务器)</li>
 </ul>
 <p>应用架构底层的网络、存储和计算资源（主机、物理机或虚拟机），由云平台供应商提供和运维。</p>
@@ -954,14 +957,14 @@
 <li>SaaS(购买云上的服务，如搭好的网页、软件等)</li>
 </ul>
 <p>用户完全不用管理任何应用和基础设施，从而变成云服务的消费者，直接消费已经准备好的应用。</p>
-<h3 id="Serverless与容器"><a href="#Serverless与容器" class="headerlink" title="Serverless与容器"></a>Serverless与容器</h3><p>容器架构中最小的运行单元是容器，而Serverless中则是函数。</p>
+<h2 id="Serverless与容器"><a href="#Serverless与容器" class="headerlink" title="Serverless与容器"></a>Serverless与容器</h2><p>容器架构中最小的运行单元是容器，而Serverless中则是函数。</p>
 <p>容器应用一般是预先部署，然后持续在线。这看起来和Serverless不大一样，因为FaaS是按需加载和执行的。</p>
 <p>而在Serverless架构中，应用是按需加载和执行的。这意味着理论上Serverless的资源使用效率更高。</p>
 <p>但其实是可以的，虽然目前容器内一般运行的是一个完整的应用，但是将容器内运行的对象变成函数显然无困难。</p>
 <p>Kubernetes上默认没有事件触发的支持，无法做到按需部署容器应用。</p>
 <p>但是通过Kubernetes叠加上一些FaaS框架运行包含函数逻辑的容器，用户很容易使Kubernetes具备FaaS服务的能力。</p>
 <p>所以也就是说，可以通过Kubernetes+事件触发容器来实现Serverless的功能。</p>
-<h3 id="Serverless技术基础————-FaaS"><a href="#Serverless技术基础————-FaaS" class="headerlink" title="Serverless技术基础———— FaaS"></a>Serverless技术基础———— FaaS</h3><p>每一个函数完成一个相对简单的业务逻辑，一个完整的应用由若干个函数组成。因为FaaS和Serverless的关系密切，因此FaaS的特点同时也是Serverless平台的特点：</p>
+<h2 id="Serverless技术基础————-FaaS"><a href="#Serverless技术基础————-FaaS" class="headerlink" title="Serverless技术基础———— FaaS"></a>Serverless技术基础———— FaaS</h2><p>每一个函数完成一个相对简单的业务逻辑，一个完整的应用由若干个函数组成。因为FaaS和Serverless的关系密切，因此FaaS的特点同时也是Serverless平台的特点：</p>
 <ul>
 <li>抽象了底层计算资源</li>
 <li>按使用量付费</li>
@@ -988,7 +991,7 @@
 <p>函数工作流</p>
 <p>当涉及多个函数执行时，就需要有逻辑处理执行的顺序、错误重试、异常捕获以及状态传递等细节。</p>
 <p>一些FaaS实现开始提供针对FaaS函数的流程编排服务或工具，以简化FaaS应用的流程编排，如AWS Step Functions和Fission Workflows。</p>
-<h3 id="BaaS"><a href="#BaaS" class="headerlink" title="BaaS"></a>BaaS</h3><p>BaaS的价值</p>
+<h2 id="BaaS"><a href="#BaaS" class="headerlink" title="BaaS"></a>BaaS</h2><p>BaaS的价值</p>
 <p>后端即服务（Backend as a Service，BaaS）</p>
 <p>通过BaaS平台，用户的应用程序可以对接后端的各种服务，省去了用户学习各种技术和中间件的成本，降低了应用开发的复杂度。BaaS的服务往往由服务供应商提供，用户无须关心底层细节，无须维护相关资源</p>
 <h1 id="Serverless-产品-————-kubeless"><a href="#Serverless-产品-————-kubeless" class="headerlink" title="Serverless 产品 ———— kubeless"></a>Serverless 产品 ———— kubeless</h1><p>主要讲一下k8s的serverless产品——kubeless。</p>
@@ -999,13 +1002,13 @@
 <li><strong>Triggers</strong>：和函数关联的事件源(通过设置trigger快速触发后台函数运行)。如果把事件源比作生产者，函数比作执行者，那么触发器就是联系两者的桥梁；</li>
 <li><strong>Runtime</strong>：代表函数运行时所依赖的环境。</li>
 </ul>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>介绍是怎么做到产品提供的基本功能的：</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>介绍是怎么做到产品提供的基本功能的：</p>
 <ul>
 <li>敏捷构建：基于用户提交的源码迅速构建可执行的函数，简化部署流程；</li>
 <li>灵活触发：基于各类事件触发函数的执行，方便快捷地集成新的事件源；</li>
 <li>自动伸缩：根据业务需求，自动完成扩容缩容，无须人工干预。</li>
 </ul>
-<h3 id="敏捷构建"><a href="#敏捷构建" class="headerlink" title="敏捷构建"></a>敏捷构建</h3><div align="center"> <img src="https://cdn.nlark.com/lark/0/2018/png/86722/1543736647858-7fe371aa-2f30-4e4b-bdb7-d90007aae53a.png" width=""> </div><br>
+<h2 id="敏捷构建"><a href="#敏捷构建" class="headerlink" title="敏捷构建"></a>敏捷构建</h2><div align="center"> <img src="https://cdn.nlark.com/lark/0/2018/png/86722/1543736647858-7fe371aa-2f30-4e4b-bdb7-d90007aae53a.png" width=""> </div><br>
 
 <p>函数生命周期的定义如图。</p>
 <p>用户只需提供源码和函数说明，构建部署等工作通常由 serverless 平台完成。 因此，基于用户提交的源码迅速构建可执行函数是 serverless 产品必须具备的基础能力。</p>
@@ -1015,7 +1018,7 @@
 <p>–runtime python2.7： 指定使用 python 2.7 作为运行环境。</p>
 <p>–from-file test.py：指定函数源码文件（支持 zip 格式）。</p>
 <p>–handler test.hello：指定使用 test.py 中的 hello 方法处理请求。(参考对象.方法的写法)</p>
-<h4 id="函数资源与K8s-Operator"><a href="#函数资源与K8s-Operator" class="headerlink" title="函数资源与K8s Operator"></a>函数资源与K8s Operator</h4><p>Kubeless 函数是一个自定义 K8s 对象，本质上是 k8s operator。k8s operator 原理如下图所示：</p>
+<h2 id="函数资源与K8s-Operator"><a href="#函数资源与K8s-Operator" class="headerlink" title="函数资源与K8s Operator"></a>函数资源与K8s Operator</h2><p>Kubeless 函数是一个自定义 K8s 对象，本质上是 k8s operator。k8s operator 原理如下图所示：</p>
 <div align="center"> <img src="https://cdn.nlark.com/lark/0/2018/png/86722/1543562354219-9e3e57ca-5d59-48f0-b228-487eda4fdf35.png" width=""> </div><br>
 
 <p>以 kubeless 函数为例，描述 K8s operator 的一般工作流程：</p>
@@ -1029,7 +1032,7 @@
 <li><p>Controller 根据监听到的事件调用相应的 handler。</p>
 </li>
 </ol>
-<h4 id="函数构成"><a href="#函数构成" class="headerlink" title="函数构成"></a>函数构成</h4><p>Kubeless 的 function-controller监听到针对 function 的 ADD 事件后，会触发相应 handler 创建函数。一个函数由若干 K8s 对象组成，包括 ConfigMap、Service、Deployment、Pod 等，其结构如下图所示：</p>
+<h2 id="函数构成"><a href="#函数构成" class="headerlink" title="函数构成"></a>函数构成</h2><p>Kubeless 的 function-controller监听到针对 function 的 ADD 事件后，会触发相应 handler 创建函数。一个函数由若干 K8s 对象组成，包括 ConfigMap、Service、Deployment、Pod 等，其结构如下图所示：</p>
 <div align="center"> <img src="https://cdn.nlark.com/lark/0/2018/png/86722/1543592884194-d679c8cf-c8cf-4ce0-8124-7a574e7d7ae7.png" width=""> </div><br>
 
 <p>这个构造的过程应该是去构建相应的各个yaml文件。<br>ocnfigmap:</p>
@@ -1051,12 +1054,12 @@
 <p>Func Container</p>
 <p>Pod 中的 Func Container 会加载 Init Container 准备好的源码和依赖并执行函数。</p>
 <p>不同 runtime 加载代码的方式大同小异。主要流程都是解析api获得的json内容，分配给制定好的字段，然后启动。</p>
-<h4 id="灵活触发-trigger的多种触发方式"><a href="#灵活触发-trigger的多种触发方式" class="headerlink" title="灵活触发(trigger的多种触发方式)"></a>灵活触发(trigger的多种触发方式)</h4><p>函数的触发方式分成了如下图所示的几种类别。</p>
+<h2 id="灵活触发-trigger的多种触发方式"><a href="#灵活触发-trigger的多种触发方式" class="headerlink" title="灵活触发(trigger的多种触发方式)"></a>灵活触发(trigger的多种触发方式)</h2><p>函数的触发方式分成了如下图所示的几种类别。</p>
 <div align="center"> <img src="https://cdn.nlark.com/lark/0/2018/png/86722/1543734315398-14f58052-43b3-45ab-a9b6-5742e6914576.png" width=""> </div><br>
 <div align="center"> <img src="https://cdn.nlark.com/lark/0/2018/png/86722/1543390616914-71b0b63f-7c2f-43e8-a7b5-b1aee9d9fb06.png" width=""> </div><br>
 
 <p>触发方式|类别<br>kubeless CLI|Synchronous Req/Rep<br>Http Trigger|Synchronous Req/Rep<br>Cronjob Trigger|Job (Master/Worker)<br>Kafka Trigger|Async Message Queue<br>Nats Trigger|Async Message Queue<br>Kinesis Trigger|Message Stream</p>
-<h5 id="HTTP-trigger"><a href="#HTTP-trigger" class="headerlink" title="HTTP trigger"></a>HTTP trigger</h5><p>Kubeless 利用 K8s ingress 机制实现了 http trigger。</p>
+<h3 id="HTTP-trigger"><a href="#HTTP-trigger" class="headerlink" title="HTTP trigger"></a>HTTP trigger</h3><p>Kubeless 利用 K8s ingress 机制实现了 http trigger。</p>
 <p>Kubeless 创建了一个名为httptriggers.kubeless.io的 CRD 来代表 http trigger 对象。</p>
 <p>同时，kubeless 包含一个名为http-trigger-controller的 CRD controller，它会持续监听针对 http trigger 和 function 的 ADD、UPDATE、DELETE 事件，并执行对应的操作。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: extensions&#x2F;v1beta1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  # 该 Ingress 的名字，即创建 http trigger 时指定的 name</span><br><span class="line">  name: http-hello</span><br><span class="line">  ...</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">  - host: example.com</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - backend:</span><br><span class="line">          # 指向 kubeless 为函数 hello 创建的 ClusterIP 类型的 Service</span><br><span class="line">          serviceName: hello</span><br><span class="line">          servicePort: 8080</span><br><span class="line">        path: &#x2F;echo</span><br></pre></td></tr></table></figure>
@@ -1075,12 +1078,12 @@
 <li>Nginx 根据 nginx.conf 中的路由规则将请求转发给函数对应的 service；</li>
 <li>最后，请求会转发至挂载在 service 后的某个函数进行处理。</li>
 </ul>
-<h5 id="Cronjob-trigger"><a href="#Cronjob-trigger" class="headerlink" title="Cronjob trigger"></a>Cronjob trigger</h5><p>如果希望<strong>定期</strong>触发函数执行，需要为函数创建 cronjob 触发器。</p>
+<h3 id="Cronjob-trigger"><a href="#Cronjob-trigger" class="headerlink" title="Cronjob trigger"></a>Cronjob trigger</h3><p>如果希望<strong>定期</strong>触发函数执行，需要为函数创建 cronjob 触发器。</p>
 <p>K8s 支持通过 CronJob 定期运行任务，kubeless 利用这个特性实现了 cronjob trigger。Kubeless 创建了一个名为cronjobtriggers.kubeless.io的 CRD 来代表 cronjob trigger 对象。</p>
 <p>同时，kubeless 包含一个名为cronjob-trigger-controller的 CRD controller，它会持续监听针对 cronjob trigger 和 function 的 ADD、UPDATE、DELETE 事件，并执行对应的操作。</p>
 <p>使用这个命令可以创建一个每分钟出发hello函数的触发器。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeless trigger cronjob create scheduled-invoke-hello --function&#x3D;hello --schedule&#x3D;&quot;*&#x2F;1 * * * *&quot;</span><br></pre></td></tr></table></figure>
-<h5 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h5><p>如果发现 kubeless 默认提供的触发器无法满足业务需求，可以自定义新的触发器。新触发器的构建流程如下：</p>
+<h3 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h3><p>如果发现 kubeless 默认提供的触发器无法满足业务需求，可以自定义新的触发器。新触发器的构建流程如下：</p>
 <ul>
 <li>为新的事件源创建一个 CRD 来描述事件源触发器；</li>
 <li>在自定义资源对象的 spec 里描述该事件源的属性，例如 KafkaTriggerSpec、HTTPTriggerSpec；</li>
@@ -1093,7 +1096,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="自动伸缩"><a href="#自动伸缩" class="headerlink" title="自动伸缩"></a>自动伸缩</h3><p>K8s 通过 Horizontal Pod Autoscaler 实现 pod 的自动水平伸缩。Kubeless 的 function 通过 K8s deployment 部署运行，因此天然可以利用 HPA 实现自动伸缩。</p>
+<h2 id="自动伸缩"><a href="#自动伸缩" class="headerlink" title="自动伸缩"></a>自动伸缩</h2><p>K8s 通过 Horizontal Pod Autoscaler 实现 pod 的自动水平伸缩。Kubeless 的 function 通过 K8s deployment 部署运行，因此天然可以利用 HPA 实现自动伸缩。</p>
 <ul>
 <li>内置度量指标 cpu</li>
 </ul>
@@ -1114,7 +1117,7 @@
 <p>目前，K8s 1.13 版本支持的度量指标类型如下：</p>
 <p>类型|简介|获取方式<br>Object|代表 k8s 对象的度量指标，例如上文提到的 Service 对象的 function_calls 指标。|custom.metrics.k8s.io<br>度量数据采集后，需要通过已有适配器或自己实现适配器获取数据。目前已有的适配器包括 k8s-prometheus-adapter、azure-k8s-metrics-adapter、k8s-stackdriver 等。<br>Pod|代表伸缩目标中每个 pod 的自定义度量指标，例如 pod 每秒处理的事务数。在与目标值比较前需要除以 pod 个数。|同上<br>Resource|代表伸缩目标中每个 pod 的 K8s 内置资源指标（如 CPU、Memory）。在与目标值比较前需要除以 pod 个数。|metrics.k8s.io<br>从 Metrics Server 或 Heapster 中获取度量数据。<br>External|External 是一个全局度量指标，它与任何 K8s 对象无关。它允许伸缩目标基于来自 cluster 外部的信息进行伸缩（如外部负载均衡器的 QPS，云消息服务中的队列长度）。|external.metrics.k8s.io<br>度量数据采集后，需要云平台厂商提供适配器或自己实现。目前已有的适配器包括 azure-k8s-metrics-adapter、k8s-stackdriver 等。</p>
 <p>准备好相应的度量数据和获取数据的组件，HPA 就能基于它们对函数进行自动伸缩。</p>
-<h4 id="度量数据使用"><a href="#度量数据使用" class="headerlink" title="度量数据使用"></a>度量数据使用</h4><ul>
+<h2 id="度量数据使用"><a href="#度量数据使用" class="headerlink" title="度量数据使用"></a>度量数据使用</h2><ul>
 <li>基于CPU使用率</li>
 </ul>
 <p>为该函数创建一个基于 cpu 使用率的 HPA，它将运行该函数的 pod 数量控制在 1 到 3 之间，并通过增加或减少 pod 个数使得所有 pod 的平均 cpu 使用率维持在 70%。</p>
@@ -1130,7 +1133,7 @@
 </ul>
 <p>这种需要通过yaml创建一个指定的HPA控制器。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">kind: HorizontalPodAutoscaler</span><br><span class="line">apiVersion: autoscaling&#x2F;v2alpha1</span><br><span class="line">metadata:</span><br><span class="line">  name: hello-cpu-and-memory</span><br><span class="line">  namespace: default</span><br><span class="line">  labels:</span><br><span class="line">    created-by: kubeless</span><br><span class="line">    function: hello</span><br><span class="line">spec:</span><br><span class="line">  scaleTargetRef:</span><br><span class="line">    kind: Deployment</span><br><span class="line">    name: hello</span><br><span class="line">  minReplicas: 1</span><br><span class="line">  maxReplicas: 10</span><br><span class="line">  metrics:</span><br><span class="line">  - type: Resource</span><br><span class="line">    resource:</span><br><span class="line">      name: cpu</span><br><span class="line">      targetAverageUtilization: 50</span><br><span class="line">  - type: Resource</span><br><span class="line">    resource:</span><br><span class="line">      name: memory</span><br><span class="line">      targetAverageValue: 200Mi</span><br></pre></td></tr></table></figure>
-<h3 id="自动伸缩策略"><a href="#自动伸缩策略" class="headerlink" title="自动伸缩策略"></a>自动伸缩策略</h3><p>一个理想的自动伸缩策略应当处理好下列场景：</p>
+<h2 id="自动伸缩策略"><a href="#自动伸缩策略" class="headerlink" title="自动伸缩策略"></a>自动伸缩策略</h2><p>一个理想的自动伸缩策略应当处理好下列场景：</p>
 <ul>
 <li>当负载激增时，函数能迅速扩展以应对突发流量；</li>
 <li>当负载下降时，函数能立即收缩以节省资源消耗；</li>
@@ -1143,19 +1146,19 @@
 <p>在每一次同步过程中，HPA 需要经历如下图所示的计算流程。</p>
 <div align="center"> <img src="https://cdn.nlark.com/lark/0/2018/png/86722/1543237287466-eacc4930-922f-4e21-9eb3-60c29da4397f.png" width=""> </div><br>
 
-<h4 id="计算目标副本数"><a href="#计算目标副本数" class="headerlink" title="计算目标副本数"></a>计算目标副本数</h4><p>计算 HPA 列表中每项指标需要的 pod 数量中的最大值作为目标。在计算每项指标的 replicaCountProposal 过程中会考虑下列因素：</p>
+<h2 id="计算目标副本数"><a href="#计算目标副本数" class="headerlink" title="计算目标副本数"></a>计算目标副本数</h2><p>计算 HPA 列表中每项指标需要的 pod 数量中的最大值作为目标。在计算每项指标的 replicaCountProposal 过程中会考虑下列因素：</p>
 <p>允许目标度量值和实际度量值存在一定程度的误差，如果在误差范围内直接使用 currentReplicas 作为 replicaCountProposal。</p>
 <p>这样做是为了避免伸缩过于频繁造成系统抖动，该误差值可以通过–horizontal-pod-autoscaler-tolerance指定。</p>
-<h5 id="pod刚启动时的特殊处理"><a href="#pod刚启动时的特殊处理" class="headerlink" title="pod刚启动时的特殊处理"></a>pod刚启动时的特殊处理</h5><p>当一个 pod 刚启动时，该 pod 反映的度量值往往不是很准确，HPA 会将这种 pod 视为 unready。在计算度量值时，HPA 会跳过处于 unready 状态的 pod。这样做是为了消除噪声干扰。</p>
+<h3 id="pod刚启动时的特殊处理"><a href="#pod刚启动时的特殊处理" class="headerlink" title="pod刚启动时的特殊处理"></a>pod刚启动时的特殊处理</h3><p>当一个 pod 刚启动时，该 pod 反映的度量值往往不是很准确，HPA 会将这种 pod 视为 unready。在计算度量值时，HPA 会跳过处于 unready 状态的 pod。这样做是为了消除噪声干扰。</p>
 <p>可以通过–horizontal-pod-autoscaler-cpu-initialization-period和–horizontal-pod-autoscaler-initial-readiness-delay调整 pod 被认为处于 unready 状态的时间。</p>
-<h4 id="平滑目标副本数"><a href="#平滑目标副本数" class="headerlink" title="平滑目标副本数"></a>平滑目标副本数</h4><p>将最近一段时间计算出的 metricDesiredReplicas 记录下来，取其中的最大值作为 stabilizedRecommendation。</p>
+<h2 id="平滑目标副本数"><a href="#平滑目标副本数" class="headerlink" title="平滑目标副本数"></a>平滑目标副本数</h2><p>将最近一段时间计算出的 metricDesiredReplicas 记录下来，取其中的最大值作为 stabilizedRecommendation。</p>
 <p>这样做是为了让缩容过程变得平滑，消除度量数据异常波动造成的影响。(比如目标副本数一直在小幅波动，那倒不如直接取个近期的最大，浪费就浪费了)。</p>
 <p>该时间段可以通过参数–horizontal-pod-autoscaler-downscale-stabilization-window指定，默认为 5 分钟。</p>
-<h4 id="规范目标副本数"><a href="#规范目标副本数" class="headerlink" title="规范目标副本数"></a>规范目标副本数</h4><p>限制 desiredReplicas 最大为 currentReplicas * scaleUpLimitFactor(等于2)，这样做是为了防止因 采集到了“虚假的”度量数据造成扩容过快。</p>
+<h2 id="规范目标副本数"><a href="#规范目标副本数" class="headerlink" title="规范目标副本数"></a>规范目标副本数</h2><p>限制 desiredReplicas 最大为 currentReplicas * scaleUpLimitFactor(等于2)，这样做是为了防止因 采集到了“虚假的”度量数据造成扩容过快。</p>
 <p>限制 desiredReplicas 大于等于 hpaMinReplicas，小于等于 hpaMaxReplicas。</p>
-<h4 id="执行扩容缩容操作"><a href="#执行扩容缩容操作" class="headerlink" title="执行扩容缩容操作"></a>执行扩容缩容操作</h4><p>如果通过上述步骤计算出的 desiredReplicas 不等于 currentReplicas，则“执行”扩容缩容操作。</p>
+<h2 id="执行扩容缩容操作"><a href="#执行扩容缩容操作" class="headerlink" title="执行扩容缩容操作"></a>执行扩容缩容操作</h2><p>如果通过上述步骤计算出的 desiredReplicas 不等于 currentReplicas，则“执行”扩容缩容操作。</p>
 <p>这里所说的执行只是将 desiredReplicas 赋值给 RC 或 Deployment 中的 replicas，pod 的创建销毁会由 kube-scheduler 和 worker node 上的 kubelet 异步完成的。</p>
-<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><p>Kubeless 基于 K8s 提供了较为完整的 serverless 解决方案，但和一些商业 serverless 产品还存在一定差距：</p>
+<h1 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h1><p>Kubeless 基于 K8s 提供了较为完整的 serverless 解决方案，但和一些商业 serverless 产品还存在一定差距：</p>
 <ul>
 <li>Kubeless 并未在镜像拉取、代码下载、容器启动等方面做过多优化，导致函数冷启动时间过长；</li>
 <li>Kubeless 并未过多考虑多租户的问题，如果希望多个用户的函数运行在同一个集群里，还需要进行二次开发；</li>
@@ -1205,6 +1208,17 @@
 	</div>
 
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/云计算//" class="article-tag-list-link color4">云计算</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -1254,7 +1268,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2020/09/11/2020-09-11-Kubernetes/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2020/09/11/Kubernetes%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8B%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%9D%BF%E7%BB%84%E4%BB%B6/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -1278,8 +1292,8 @@
     </a>
   
   
-    <a href="/2020/08/25/Kubernetes%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B9%8BPods/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Kubernetes基础知识之Pods</div>
+    <a href="/2020/08/30/2020-08-30-JAVA%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JAVA设计模式</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -1405,19 +1419,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Lua</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Kubernetes</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dashboard</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1446,6 +1448,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
             
             <div class="clearfix"></div>
