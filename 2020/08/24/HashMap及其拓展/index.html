@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/807144-4db95a9fa5fedc1c?imageMogr2/auto-orient/strip|imageView2/2/w/820/format/webp">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/807144-6264960638978dff?imageMogr2/auto-orient/strip|imageView2/2/w/757/format/webp">
 <meta property="article:published_time" content="2020-08-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-02-14T08:15:38.434Z">
+<meta property="article:modified_time" content="2021-02-14T08:36:34.624Z">
 <meta property="article:author" content="Chenhan Li">
 <meta property="article:tag" content="JAVA">
 <meta property="article:tag" content="HashMap">
@@ -180,17 +180,11 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h1><p>HashMap在jdk1.8中是通过<strong>链地址法</strong>实现的：</p>
-<ol>
-<li><p>先用一个数组作为桶存放数据结构</p>
-</li>
-<li><p>然后桶中存放的要么是<strong>链表</strong>（<strong>链表的节点个数小于等于8</strong>），要么是<strong>红黑树</strong>（链表节点数大了之后变成红黑树），要么为<strong>空</strong>。</p>
-</li>
-<li><p>如果计算的索引位置冲突了，就加入到链表中一直延伸，超过链表大小阈值就转换为红黑树。</p>
+<p>1.先用一个数组作为桶存放数据结构</p>
+<p>2.然后桶中存放的要么是<strong>链表</strong>（<strong>链表的节点个数小于等于8</strong>），要么是<strong>红黑树</strong>（链表节点数大了之后变成红黑树），要么为<strong>空</strong>。</p>
+<p>3.如果计算的索引位置冲突了，就加入到链表中一直延伸，超过链表大小阈值就转换为红黑树。</p>
 <a id="more"></a>
-
-<h1 id="插入时，计算插入到哪里-先异或后与"><a href="#插入时，计算插入到哪里-先异或后与" class="headerlink" title="插入时，计算插入到哪里(先异或后与)"></a>插入时，计算插入到哪里(先异或后与)</h1></li>
-</ol>
-<p>实际上是通过hashCode得到哈希码，然后计算得到哈希值，再计算在桶中的位置，冲突则解决冲突，用链地址法。</p>
+<h1 id="插入时，计算插入到哪里-先异或后与"><a href="#插入时，计算插入到哪里-先异或后与" class="headerlink" title="插入时，计算插入到哪里(先异或后与)"></a>插入时，计算插入到哪里(先异或后与)</h1><p>实际上是通过hashCode得到哈希码，然后计算得到哈希值，再计算在桶中的位置，冲突则解决冲突，用链地址法。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 给一个key，求HashCode，对Code操作得到hash，再计算存放位置，这里是哈希值hash的计算方法</span><br><span class="line">return (key &#x3D;&#x3D; null)? 0 : h &#x3D; key.hashCode() ^ h &gt;&gt;&gt;16;</span><br><span class="line">position &#x3D; (n - 1) &amp; hash; &#x2F;&#x2F;n是桶的数组长度</span><br><span class="line">&#x2F;&#x2F; 为什么n-1？因为n是2的幂次方，所以一个位置是1，其他全0，n-1后，所有低位都变成1，这样就可以按位与了</span><br></pre></td></tr></table></figure>
 <p>哈希表存的是key和对应的value值，需要建立key的索引位置，key的hashCode一共32位，右移16位异或可以将高低位信息整合在一起，这样就计算出哈希值了。</p>
 <p>求哈希值（各种哈希值hash求法，称为哈希函数:模N取余（hash=K mod C），数字分析法(取key中取值较均匀的数字作为地址)，aK+C直接寻址法，平法取中法(key平方，取中间分布较均匀的几位)等等。<br>解决哈希冲突的比如线性探测法(一个个向后探测)，二次探测法(往左右跳着探测)，伪随机探测法(伪随机数，往边上定位置)），链地址法（后续加入链表）。</p>
@@ -204,12 +198,8 @@
 <p>其中<strong>cap-1</strong>的目的是另找到的目标值大于或等于原值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int n &#x3D; cap - 1;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 1;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 2;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 4;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 8;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 16;</span><br><span class="line">return (n &lt; 0) ? 1 : (n &gt; MAXIMUM_CAPACITY)? MAXIMUM_CAPACITY: n+1;</span><br></pre></td></tr></table></figure>
 <p>这里做了什么？</p>
-<ol>
-<li><p>把n-1，这是为了找到≥原值的扩容目标值</p>
-</li>
-<li><p>做1 2 4 8 16 的右移位，是为了把高位1的影响依次传递到后面，找到大于cap且最近的2的整数次幂（右移1，则绑定了每2位，右移2，则在此基础上绑定了每4位，类推），最后肯定是全1，然后+1就能出2的幂次方了，对应n位。</p>
-</li>
-</ol>
+<p>1.把n-1，这是为了找到≥原值的扩容目标值</p>
+<p>2.做1 2 4 8 16 的右移位，是为了把高位1的影响依次传递到后面，找到大于cap且最近的2的整数次幂（右移1，则绑定了每2位，右移2，则在此基础上绑定了每4位，类推），最后肯定是全1，然后+1就能出2的幂次方了，对应n位。</p>
 <h1 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h1><ul>
 <li><p>首先对key求hash后取得所定位的桶。</p>
 </li>
@@ -230,11 +220,9 @@
 </li>
 <li><p>根据当前 key.hashcode 定位到具体的桶中并判断是否为空，为空表明没有 Hash 冲突，在当前位置创建一个新桶即可。</p>
 </li>
-<li><ol start="3">
-<li>如果当前桶有值（ Hash 冲突），那么就要比较当前桶中的 key、key 的 hashcode 与写入的 key 是否相等，相等就赋值给 e,在第 8 步的时候会统一进行赋值及返回。</li>
-</ol>
+<li><p>3.如果当前桶有值（ Hash 冲突），那么就要比较当前桶中的 key、key 的 hashcode 与写入的 key 是否相等，相等就赋值给 e,在第 8 步的时候会统一进行赋值及返回。</p>
 </li>
-<li><p>3 中不等，则如果当前桶为红黑树，那就要按照红黑树的方式写入数据。</p>
+<li><p>3中不等，则如果当前桶为红黑树，那就要按照红黑树的方式写入数据。</p>
 </li>
 <li><p>3.中不等，如果是个链表，就需要将当前的 key、value 封装成一个新节点写入到当前桶的后面（形成链表）。</p>
 </li>
@@ -242,25 +230,17 @@
 </li>
 <li><p>如果在遍历过程中找到 key 相同时直接退出遍历。</p>
 </li>
-<li><ol start="8">
-<li>如果 e != null 就相当于存在相同的 key, 那就需要将值覆盖。</li>
-</ol>
+<li><p>8.如果 e != null 就相当于存在相同的 key, 那就需要将值覆盖。</p>
 </li>
 <li><p>最后判断是否需要进行扩容。</p>
 </li>
 </ul>
 <h1 id="扩容过程"><a href="#扩容过程" class="headerlink" title="扩容过程"></a>扩容过程</h1><p>通过resize函数将数组扩容为原来容量的2倍后，需要<strong>重新将原有的元素映射到数组中</strong>。</p>
-<ol>
-<li><p>如果原来的位置只有一个节点，直接通过pos = (n - 1) &amp; hash计算其在数组中的位置。</p>
-</li>
-<li><p>如果是链表，进行链表的rehash时，根据hash &amp; oldCap的结果是0还是1，将链表拆分成两部分。</p>
-</li>
-</ol>
+<p>1.如果原来的位置只有一个节点，直接通过pos = (n - 1) &amp; hash计算其在数组中的位置。</p>
+<p>2.如果是链表，进行链表的rehash时，根据hash &amp; oldCap的结果是0还是1，将链表拆分成两部分。</p>
 <p>举个栗子：如果原数组的容量为16，那n-1=15，然后有两个Entry通过pos = (n - 1) &amp; hash这个公式计算得到，他们在桶中的位置索引都是5。</p>
 <p>扩容后，数组长度变成原来的两倍即32（n的大小变化了），n-1=31，用二进制表示就是1 1111，然后通过pos = (n - 1) &amp; hash这个公式，就能把上面两个节点分成两个部分。</p>
-<ol start="3">
-<li>如果是红黑树，就调用红黑树的split()方法，此处，会对红黑树也和链表一样分为高位和低位两个部分，如果树中元素的个数小于6个了，就将红黑树转换成链表。</li>
-</ol>
+<p>3.如果是红黑树，就调用红黑树的split()方法，此处，会对红黑树也和链表一样分为高位和低位两个部分，如果树中元素的个数小于6个了，就将红黑树转换成链表。</p>
 <h1 id="移除过程"><a href="#移除过程" class="headerlink" title="移除过程"></a>移除过程</h1><p>移除元素时，先通过key找到对应的结点。</p>
 <p>然后再分为链表、红黑树两种情况去处理。</p>
 <p>红黑树转换成链表的操作。</p>
@@ -346,23 +326,15 @@ hash== -2 (TREEBIN) ： 当前节点已经树化，为TreeBin对象，TreeBin节
 
 hash== -3 (RESERVED) ： 临时保留的哈希
 </code></pre>
-<h2 id="重要的内部类"><a href="#重要的内部类" class="headerlink" title="重要的内部类"></a>重要的内部类</h2><ol>
-<li><p>Node节点类：<strong>这个类是后面三个类的基类。</strong>和HashMap中的节点类似，只是其<strong>val变量和next指针都用volatile来修饰</strong>。且不允许调用setValue方法修改Node的value值。</p>
-</li>
-<li><p>TreeNode：<strong>树节点</strong>类，指的是整个TreeBin中的节点的数据结构。</p>
-</li>
-</ol>
+<h2 id="重要的内部类"><a href="#重要的内部类" class="headerlink" title="重要的内部类"></a>重要的内部类</h2><p>1.Node节点类：<strong>这个类是后面三个类的基类。</strong>和HashMap中的节点类似，只是其<strong>val变量和next指针都用volatile来修饰</strong>。且不允许调用setValue方法修改Node的value值。</p>
+<p>2.TreeNode：<strong>树节点</strong>类，指的是整个TreeBin中的节点的数据结构。</p>
 <p>链表过长时会转换成红黑树，但是与HashMap不相同的是，<strong>它不直接转换为红黑树</strong>，而是把Node包装成树节点<strong>TreeNode放在TreeBin对象</strong>中，然后由TreeBin这个数据结构完成对红黑树的包装。</p>
 <p>而且TreeNode在ConcurrentHashMap继承自Node类，也就是说<strong>TreeNode带有next指针</strong>，这样做的目的是方便基于TreeBin的访问。</p>
-<ol start="3">
-<li>TreeBin： </li>
-</ol>
+<p>3.TreeBin： </p>
 <p>这个类放了一个名为root的TreeNode节点，也就是说在实际的ConcurrentHashMap“数组”中，存放的是TreeBin对象，而不是TreeNode对象，这是与HashMap的区别，另外这个类还带有了读写锁。</p>
 <p>而HashMap的不足在于他的桶中存储的是TreeNode结点，这里的根本原因是并发过程中，有可能因为树的调整，形状发生错误变化，这样的话，桶中的第一个元素就变了，而使用TreeBin包装的话，就不会出现这种情况。 </p>
 <p>这种类型的节点，我们通过hash值是否等于-2就可以判断桶中的节点是否是红黑树。</p>
-<ol start="4">
-<li>ForwardingNode：用于连接两个table的节点类。</li>
-</ol>
+<p>4.ForwardingNode：用于连接两个table的节点类。</p>
 <p>它包含一个nextTable指针，用于指向下一张表。而且这个节点的key value next指针全部为null。</p>
 <p>在扩容操作中，我们需要对每个桶中的结点进行分离和转移。如果某个桶结点中所有节点都已经迁移完成了（已经被转移到新表 nextTable 中了），那么会在原 table 表的该位置挂上一个 ForwardingNode 结点，说明此桶<strong>已经完成迁移</strong>。这种类型的节点的hash值是-1。</p>
 <h1 id="数组初始化"><a href="#数组初始化" class="headerlink" title="数组初始化"></a>数组初始化</h1><p>数组的初始化是在ConcurrentHashMap插入元素的时候发生的，如调用put时当前表为空时发生的。确定没有在扩容后，new一个新的表，更新sc。</p>

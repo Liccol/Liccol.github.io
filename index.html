@@ -2644,12 +2644,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h1><p>HashMap在jdk1.8中是通过<strong>链地址法</strong>实现的：</p>
-<ol>
-<li><p>先用一个数组作为桶存放数据结构</p>
-</li>
-<li><p>然后桶中存放的要么是<strong>链表</strong>（<strong>链表的节点个数小于等于8</strong>），要么是<strong>红黑树</strong>（链表节点数大了之后变成红黑树），要么为<strong>空</strong>。</p>
-</li>
-<li><p>如果计算的索引位置冲突了，就加入到链表中一直延伸，超过链表大小阈值就转换为红黑树。</p>
+<p>1.先用一个数组作为桶存放数据结构</p>
+<p>2.然后桶中存放的要么是<strong>链表</strong>（<strong>链表的节点个数小于等于8</strong>），要么是<strong>红黑树</strong>（链表节点数大了之后变成红黑树），要么为<strong>空</strong>。</p>
+<p>3.如果计算的索引位置冲突了，就加入到链表中一直延伸，超过链表大小阈值就转换为红黑树。</p>
         
           <a class="article-more-a" href="/2020/08/24/HashMap%E5%8F%8A%E5%85%B6%E6%8B%93%E5%B1%95/#more">more >></a>
         
