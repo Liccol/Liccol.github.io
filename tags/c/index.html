@@ -6,24 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>HashMap及其拓展 | 长晴</title>
+  <title>Tag: C++ | 长晴</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="HashMap的实现方式，在jdk1.7和jdk1.8中各不相同，由其线程安全问题，还引出了诸如ConcurrentHashMap等数据结构。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="HashMap及其拓展">
-<meta property="og:url" content="http://example.com/2020/08/24/HashMap%E5%8F%8A%E5%85%B6%E6%8B%93%E5%B1%95/index.html">
+  <meta name="description" content="人间忽晚 山河已秋">
+<meta property="og:type" content="website">
+<meta property="og:title" content="长晴">
+<meta property="og:url" content="http://example.com/tags/C/index.html">
 <meta property="og:site_name" content="长晴">
-<meta property="og:description" content="HashMap的实现方式，在jdk1.7和jdk1.8中各不相同，由其线程安全问题，还引出了诸如ConcurrentHashMap等数据结构。">
+<meta property="og:description" content="人间忽晚 山河已秋">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/807144-4db95a9fa5fedc1c?imageMogr2/auto-orient/strip|imageView2/2/w/820/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/807144-6264960638978dff?imageMogr2/auto-orient/strip|imageView2/2/w/757/format/webp">
-<meta property="article:published_time" content="2020-08-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-02-14T09:09:46.735Z">
 <meta property="article:author" content="Chenhan Li">
-<meta property="article:tag" content="JAVA">
-<meta property="article:tag" content="HashMap">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/807144-4db95a9fa5fedc1c?imageMogr2/auto-orient/strip|imageView2/2/w/820/format/webp">
   
     <link rel="alternative" href="/atom.xml" title="长晴" type="application/atom+xml">
   
@@ -159,436 +152,75 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-HashMap及其拓展" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      HashMap及其拓展
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/08/12/c++%E8%B0%83%E7%94%A8Lua%E5%87%BD%E6%95%B0/" class="archive-article-date">
+  	<time datetime="2020-08-11T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-12</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/08/12/c++%E8%B0%83%E7%94%A8Lua%E5%87%BD%E6%95%B0/">C++调用Lua函数</a>
     </h1>
   
 
-        
-        <a href="/2020/08/24/HashMap%E5%8F%8A%E5%85%B6%E6%8B%93%E5%B1%95/" class="archive-article-date">
-  	<time datetime="2020-08-23T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h1><p>HashMap在jdk1.8中是通过<strong>链地址法</strong>实现的：</p>
-<p>1.先用一个数组作为桶存放数据结构</p>
-<p>2.然后桶中存放的要么是<strong>链表</strong>（<strong>链表的节点个数小于等于8</strong>），要么是<strong>红黑树</strong>（链表节点数大了之后变成红黑树），要么为<strong>空</strong>。</p>
-<p>3.如果计算的索引位置冲突了，就加入到链表中一直延伸，超过链表大小阈值就转换为红黑树。</p>
-<a id="more"></a>
-<h1 id="插入时，计算插入到哪里-先异或后与"><a href="#插入时，计算插入到哪里-先异或后与" class="headerlink" title="插入时，计算插入到哪里(先异或后与)"></a>插入时，计算插入到哪里(先异或后与)</h1><p>实际上是通过hashCode得到哈希码，然后计算得到哈希值，再计算在桶中的位置，冲突则解决冲突，用链地址法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 给一个key，求HashCode，对Code操作得到hash，再计算存放位置，这里是哈希值hash的计算方法</span><br><span class="line">return (key &#x3D;&#x3D; null)? 0 : h &#x3D; key.hashCode() ^ h &gt;&gt;&gt;16;</span><br><span class="line">position &#x3D; (n - 1) &amp; hash; &#x2F;&#x2F;n是桶的数组长度</span><br><span class="line">&#x2F;&#x2F; 为什么n-1？因为n是2的幂次方，所以一个位置是1，其他全0，n-1后，所有低位都变成1，这样就可以按位与了</span><br></pre></td></tr></table></figure>
-<p>哈希表存的是key和对应的value值，需要建立key的索引位置，key的hashCode一共32位，右移16位异或可以将高低位信息整合在一起，这样就计算出哈希值了。</p>
-<p>求哈希值（各种哈希值hash求法，称为哈希函数:模N取余（hash=K mod C），数字分析法(取key中取值较均匀的数字作为地址)，aK+C直接寻址法，平法取中法(key平方，取中间分布较均匀的几位)等等。<br>解决哈希冲突的比如线性探测法(一个个向后探测)，二次探测法(往左右跳着探测)，伪随机探测法(伪随机数，往边上定位置)），链地址法（后续加入链表）。</p>
-<p>hash求出来后，实际上是做到了key-&gt;hash的映射，但是存储位置还没有定下来，所以需要继续计算存储位置position。</p>
-<p>特别的是，<strong>key==null的内容放在第0个桶</strong>。</p>
-<h2 id="如果键值对多了，怎么定扩容？"><a href="#如果键值对多了，怎么定扩容？" class="headerlink" title="如果键值对多了，怎么定扩容？"></a>如果键值对多了，怎么定扩容？</h2><p>在不断放入元素的时候，怎么把Map扩容？然后把数字放进去？</p>
-<p>扩容操作一般出现在<strong>容量*负载因子=该容量时需要进行扩容</strong>，HashMap每次扩容到<strong>2的幂次方</strong>，涉及到rehash和数据复制。</p>
-<p>为什么容量必须为2的整数次方，并且扩容是2倍2倍地扩：使扩容前的单个节点无需与其他节点交互，只控制自己的节点和跳过去的新节点。</p>
-<p>例如hash表有8个，要扩容为16个，那么之前放在7表的数据，可能对16取模会余15，也可能还是7；其他7种元素只能分配到7和15以外的0-15余数；这样的话，只需把部分数据往15表上移，保留一部分到原表中。</p>
-<p>下面的方法是获得大于cap(可以理解成输入键值的大小)且最近的2的整数次幂的数。如输入10，则返回16。</p>
-<p>其中<strong>cap-1</strong>的目的是另找到的目标值大于或等于原值。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int n &#x3D; cap - 1;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 1;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 2;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 4;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 8;</span><br><span class="line">n |&#x3D; n &gt;&gt;&gt; 16;</span><br><span class="line">return (n &lt; 0) ? 1 : (n &gt; MAXIMUM_CAPACITY)? MAXIMUM_CAPACITY: n+1;</span><br></pre></td></tr></table></figure>
-<p>这里做了什么？</p>
-<p>1.把n-1，这是为了找到≥原值的扩容目标值</p>
-<p>2.做1 2 4 8 16 的右移位，是为了把高位1的影响依次传递到后面，找到大于cap且最近的2的整数次幂（右移1，则绑定了每2位，右移2，则在此基础上绑定了每4位，类推），最后肯定是全1，然后+1就能出2的幂次方了，对应n位。</p>
-<h1 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h1><ul>
-<li><p>首先对key求hash后取得所定位的桶。</p>
-</li>
-<li><p>如果桶为空则直接返回 null 。</p>
-</li>
-<li><p>否则判断桶的第一个位置(有可能是链表、红黑树)的 key 是否为查询的 key，是就直接返回 value。</p>
-</li>
-<li><p>如果第一个不匹配，则判断它的下一个是红黑树还是链表。</p>
-</li>
-<li><p>红黑树就按照树的查找方式返回值。</p>
-</li>
-<li><p>不然就按照链表的方式遍历匹配返回值。</p>
-<h1 id="put方法"><a href="#put方法" class="headerlink" title="put方法"></a>put方法</h1></li>
-</ul>
-<p>主要通过putVal()函数实现，putVal过程中：</p>
-<ul>
-<li><p>判断当前桶是否为空，空的就需要初始化（resize 中会判断是否进行初始化）。</p>
-</li>
-<li><p>根据当前 key.hashcode 定位到具体的桶中并判断是否为空，为空表明没有 Hash 冲突，在当前位置创建一个新桶即可。</p>
-</li>
-<li><p>3.如果当前桶有值（ Hash 冲突），那么就要比较当前桶中的 key、key 的 hashcode 与写入的 key 是否相等，相等就赋值给 e,在第 8 步的时候会统一进行赋值及返回。</p>
-</li>
-<li><p>3中不等，则如果当前桶为红黑树，那就要按照红黑树的方式写入数据。</p>
-</li>
-<li><p>3.中不等，如果是个链表，就需要将当前的 key、value 封装成一个新节点写入到当前桶的后面（形成链表）。</p>
-</li>
-<li><p>接着判断当前链表的大小是否大于预设的阈值（默认为8），大于时就要转换为红黑树。</p>
-</li>
-<li><p>如果在遍历过程中找到 key 相同时直接退出遍历。</p>
-</li>
-<li><p>8.如果 e != null 就相当于存在相同的 key, 那就需要将值覆盖。</p>
-</li>
-<li><p>最后判断是否需要进行扩容。</p>
-</li>
-</ul>
-<h1 id="扩容过程"><a href="#扩容过程" class="headerlink" title="扩容过程"></a>扩容过程</h1><p>通过resize函数将数组扩容为原来容量的2倍后，需要<strong>重新将原有的元素映射到数组中</strong>。</p>
-<p>1.如果原来的位置只有一个节点，直接通过pos = (n - 1) &amp; hash计算其在数组中的位置。</p>
-<p>2.如果是链表，进行链表的rehash时，根据hash &amp; oldCap的结果是0还是1，将链表拆分成两部分。</p>
-<p>举个栗子：如果原数组的容量为16，那n-1=15，然后有两个Entry通过pos = (n - 1) &amp; hash这个公式计算得到，他们在桶中的位置索引都是5。</p>
-<p>扩容后，数组长度变成原来的两倍即32（n的大小变化了），n-1=31，用二进制表示就是1 1111，然后通过pos = (n - 1) &amp; hash这个公式，就能把上面两个节点分成两个部分。</p>
-<p>3.如果是红黑树，就调用红黑树的split()方法，此处，会对红黑树也和链表一样分为高位和低位两个部分，如果树中元素的个数小于6个了，就将红黑树转换成链表。</p>
-<h1 id="移除过程"><a href="#移除过程" class="headerlink" title="移除过程"></a>移除过程</h1><p>移除元素时，先通过key找到对应的结点。</p>
-<p>然后再分为链表、红黑树两种情况去处理。</p>
-<p>红黑树转换成链表的操作。</p>
-<p>在resize中和remove中是不同的，resize中是当红黑树中的节点少于6个时就将红黑树转为链表，</p>
-<p>而remove函数中，是当红黑树的根节点的左孩子或右孩子为空时，才将红黑树转换成链表的。</p>
-<h1 id="为什么HashMap线程不安全？在并发场景下使用时容易出现死循环？"><a href="#为什么HashMap线程不安全？在并发场景下使用时容易出现死循环？" class="headerlink" title="为什么HashMap线程不安全？在并发场景下使用时容易出现死循环？"></a>为什么HashMap线程不安全？在并发场景下使用时容易出现死循环？</h1><p>put导致数据覆盖：put时如果桶中的数据为空，则直接new一个元素，放入桶中。</p>
-<p>在并发条件下，第一个线程判断桶中无元素，则new一个新节点，如果此时该线程被挂起。</p>
-<p>然后另一个线程直接在此处放了一个新节点进去，然后线程1被唤醒后，不知道此位置已经有新元素了，会直接放数据进去，此时会将原来线程放的数据覆盖。</p>
-<p>此外，在put的时候涉及到size++的操作，可能会导致HashMap的size出错。</p>
-<p>说白了就是线程1put的时候，线程1被挂起，线程2不知道new过了，重复new覆盖线程1的数据。</p>
-<p><strong>1. 扩容时(不断put需要扩容时)死循环或数据丢失(jdk1.7中插入元素用的是头插法,每次会把元素插入到新数组的头部,后面往后推)</strong></p>
-<ul>
-<li>假设有两个线程A和B都在进行put操作(假设当前需要扩容从2-&gt;4)。线程A在执行到transfer函数中被挂起，此时线程A还没完成扩容操作，链表还没有重连接完毕。</li>
-</ul>
-<p>假设当时容量2，内容为7-&gt;5，插入一个3变成7-&gt;5-&gt;3，需要扩容，执行到下面的第二步。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">e.next  &#x3D; newTable[i];</span><br><span class="line">newTable[i] &#x3D; e;	&#x2F;&#x2F;在这里被挂起</span><br><span class="line">e &#x3D; next.</span><br></pre></td></tr></table></figure>
-<p>此时已经变成7-&gt;5和3-&gt;null，e=3，还没完成链表调整。</p>
-<ul>
-<li><p>线程A挂起后，此时线程B正常执行，并完成resize操作，把链表的重连接做好了，弄成了5 和 7-&gt;3, 有7.next = 3;</p>
-</li>
-<li><p>此时切换到线程A上，在线程A挂起时内存中存放的值和2的结构不一样。</p>
-</li>
-<li><p>A继续执行，可能出现链表a.next = b, b.next = a的环形链表出现，然后进行get操作时，就可能引起死循环。</p>
-</li>
-<li><p>也有可能A继续执行，因为链表结构不同，直接跳过了某个值的连接关系，导致数据丢失。</p>
-</li>
-</ul>
-<p><strong>2. put时扩容带来数据覆盖，发生线程不安全(jdk1.8中)</strong></p>
-<p>jdk1.8中，在发生hash碰撞，不再采用头插法方式，而是直接插入新数组上的链表尾部，因此不会出现环形链表的情况。</p>
-<p>put时，如果没有hash碰撞则会直接插入元素。如果<strong>线程A和线程B同时进行put操作</strong>，刚好<strong>这两条不同的数据hash值一样，并且该位置数据为null</strong>，所以这线程A、B都会进入代码put内容。</p>
-<p>假设一种情况，线程A进入后还未进行数据插入时挂起，而线程B正常执行，从而正常插入数据。</p>
-<p>然后线程A获取时间片，此时线程A不进行hash判断了，问题出现：线程A会把线程B插入的数据给覆盖，发生线程不安全。</p>
-<h2 id="HashTable怎么就线程安全了？"><a href="#HashTable怎么就线程安全了？" class="headerlink" title="HashTable怎么就线程安全了？"></a>HashTable怎么就线程安全了？</h2><p>HashTable通过加synchronized关键字修饰方法来做线程安全。synchronized可以保证方法或者代码块在运行时，同一时刻只有一个方法可以进入到临界区，同时它还可以保证共享变量的内存可见性，实际上就是加了个全局锁，所以其实效率也低下。</p>
-<h1 id="LinkedHashMap继承HashMap"><a href="#LinkedHashMap继承HashMap" class="headerlink" title="LinkedHashMap继承HashMap"></a>LinkedHashMap继承HashMap</h1><p>其在HashMap的基础上，<strong>增加了一条双向链表</strong>，使得可以保持键值对的插入顺序，继承自原来HashMap的Node，增加了befor和after两个字段，用于维护双向链表。</p>
-<p>除此之外，为了记录插入顺序，在LinkedHashMap中，增加了<strong>头结点和尾节点</strong>两个变量，每当有新键值对节点插入，新节点最终会接在 tail 引用指向的节点后面。而 tail 引用则会移动到新的节点上，这样一个双向链表就建立起来了。</p>
-<p>相应的下面几个过程，重要的都是，在操作完之后，如果更新双向链表关系。</p>
-<h2 id="建立过程"><a href="#建立过程" class="headerlink" title="建立过程"></a>建立过程</h2><p>重写了newNode方法，在这里建立链表的关系。（即生成新的节点，然后更新链表，新节点添加到链表尾部）</p>
-<h2 id="删除过程"><a href="#删除过程" class="headerlink" title="删除过程"></a>删除过程</h2><p>使用的是HashMap的remove方法，但是重写了afterNodeRemoval方法，在这里更新链表。</p>
-<h2 id="访问元素"><a href="#访问元素" class="headerlink" title="访问元素"></a>访问元素</h2><p>在访问元素的时候，有一个<strong>accessOrder</strong>属性，为<strong>true</strong>时，每访问一个元素，都会将这个访问的元素放到尾部，保证链表尾部是最常访问的数据，可用在缓存等场景中。</p>
-<p>LinkedHashMap使用父类的HashMap来实现元素的访问，重写了afterNodeAccess方法，这样如果accessOrder为true时，就会调用afterNodeAccess方法，来按照访问来维护链表的顺序。</p>
-<h2 id="基于LinkedHashMap的缓存实现"><a href="#基于LinkedHashMap的缓存实现" class="headerlink" title="基于LinkedHashMap的缓存实现"></a>基于LinkedHashMap的缓存实现</h2><p>基于LinkedHashMap，可以实现LRU缓存。在HashMap的putVal函数最后，会调用afterInsertion函数。而LinkedHashMap重写了这个函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void afterNodeInsertion(boolean evict) &#123; &#x2F;&#x2F; possibly remove eldest</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; first;</span><br><span class="line">    &#x2F;&#x2F; 根据条件判断是否移除最近最少被访问的节点</span><br><span class="line">    if (evict &amp;&amp; (first &#x3D; head) !&#x3D; null &amp;&amp; removeEldestEntry(first)) &#123;</span><br><span class="line">        K key &#x3D; first.key;</span><br><span class="line">        removeNode(hash(key), key, null, false, true);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; 移除最近最少被访问条件之一，通过覆盖此方法可实现不同策略的缓存</span><br><span class="line">	&#x2F;&#x2F; 这里了也是修改缓存机制时需要重写的地方</span><br><span class="line">	protected boolean removeEldestEntry(Map.Entry&lt;K,V&gt; eldest) &#123;</span><br><span class="line">		return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果想用LinkedHashMap来实现LRU缓存，就直接继承LinkedHashMap，然后重写removeEldestEntry函数，设置在某些条件下让其返回true（比如当前集合的元素数量大于某一阈值，就返回true，否则返回false）。这样，当条件满足时，就会删除头节点。</p>
-<h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h1><h1 id="ConcurrentHashMap——线程安全的HashMap-jdk-1-7"><a href="#ConcurrentHashMap——线程安全的HashMap-jdk-1-7" class="headerlink" title="ConcurrentHashMap——线程安全的HashMap(jdk 1.7)"></a>ConcurrentHashMap——线程安全的HashMap(jdk 1.7)</h1><p>相比之下，ConcurrentHashMap 使用了分段锁技术来提高了并发度，ConcurrentHashMap引入Segment 的概念，目的是将map拆分成多个Segment(默认16个)。</p>
-<p>操作ConcurrentHashMap细化到操作某一个Segment(槽)。在多线程环境下，不同线程操作不同的Segment，他们互不影响，这便可实现并发操作。</p>
-<p>当我们对ConcurrentHashMap并发操作时，只要锁住一个 segment，其他剩余的Segment依然可以操作。这样只要保证每个 Segment 是线程安全的，我们就实现了全局的线程安全。而每个segment后面则是和hashmap一样，由数组+链表的结构组成。</p>
-<div align="center"> <img src="https://upload-images.jianshu.io/upload_images/807144-4db95a9fa5fedc1c?imageMogr2/auto-orient/strip|imageView2/2/w/820/format/webp" width=""> </div><br>
-
-
-<p>其主要采用<strong>CAS操作+synchronized锁</strong>的方式实现线程安全，其中synchronize锁的粒度为桶中头结点（包括链表Node结点，包装红黑树的TreeBin结点），底层依然由 “数组”桶+链表+红黑树 的方式实现。</p>
-<h1 id="put方法-1"><a href="#put方法-1" class="headerlink" title="put方法"></a>put方法</h1><ul>
-<li><p>通过key找到承载的Segment对象位置，然后调用tryLock()竞争Segment的锁，以确保能操作线程；如果获取锁失败，执行scanAndLockForPut方法等到调用成功。</p>
-</li>
-<li><p>循环次数retries 次数大于事先设置定好的MAX_SCAN_RETRIES，就执行lock() 方法，此方法会阻塞等待，一直到成功拿到Segment锁为止。</p>
-</li>
-<li><p>调用成功后走put流程</p>
-</li>
-<li><p>遍历该 HashEntry，如果不为空则判断传入的 key 和当前遍历的 key 是否相等，相等则覆盖旧的 value。</p>
-</li>
-<li><p>此前没有改key，即为空，则需要新建一个 HashEntry 并加入到 Segment 中，会先判断是否需要扩容。（这里就涉及到hashmap中的扩容导致线程不安全的问题了）</p>
-</li>
-<li><p>最后会解除获取当前 Segment 的锁。</p>
-</li>
-</ul>
-<h2 id="那么在这样的设计下，是否还会有hashmap的put线程不安全问题呢？"><a href="#那么在这样的设计下，是否还会有hashmap的put线程不安全问题呢？" class="headerlink" title="那么在这样的设计下，是否还会有hashmap的put线程不安全问题呢？"></a>那么在这样的设计下，是否还会有hashmap的put线程不安全问题呢？</h2><p>ConcurrentHashMap的Segment槽是固定的16个，不变的</p>
-<p>而ConcurrentHashMap的扩容实际上是Segment中的HashEntry数组扩容。当HashEntry达到某个临界点后，会扩容2为之前的2倍， 原理跟HashMap扩容类似。</p>
-<p>进行扩容时，调用rehash方法，其实就是HashEntry扩展逻辑。</p>
-<p>当线程执行到rehash方法时，表示当前线程已经获取到到当前Segment的锁对象，这就表示rehash方法的执行是线程安全，不会存在并发问题。</p>
-<h1 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h1><p>ConcurrentHashMap的remove方法跟put方法操作一样，先获取segement对象后再操作，这里就不重复了。也是找到位置，然后删除。</p>
-<h1 id="get"><a href="#get" class="headerlink" title="get"></a>get</h1><p>会发现<strong>get方法并没有获取锁的操作</strong>，这时就得讨论下执行get操作线程安全问题啦。</p>
-<p>只需要将 Key 通过 Hash 之后定位到具体的 Segment ，再通过一次 Hash 定位到具体的元素上。</p>
-<p>get方法之所以不需要加锁，原因比较简单，get为只读操作，不会改动map数据结构，所以在操作过程中，只需要保证涉及读取数据的属性为线程可见即可，也即使用volatile修饰。</p>
-<p>所以ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需要加锁。</p>
-<h1 id="ConcurrentHashMap-jdk1-8版本"><a href="#ConcurrentHashMap-jdk1-8版本" class="headerlink" title="ConcurrentHashMap(jdk1.8版本)"></a>ConcurrentHashMap(jdk1.8版本)</h1><p>jdk8版本的ConcurrentHashMap直接抛弃了Segment的设计，采用了较为轻捷的Node + CAS + Synchronized设计，保证线程安全。</p>
-<p>具体的数据结构是这样的：</p>
-<div align="center"> <img src="https://upload-images.jianshu.io/upload_images/807144-6264960638978dff?imageMogr2/auto-orient/strip|imageView2/2/w/757/format/webp" width=""> </div><br>
-
-<p>构建一个默认大小为16的Node数组，类似hashmap的数组桶，数组上是链表node(1.7中是HashEntry,node中把val和next都用volatile修饰，保证了可见性)或者红黑树TreeNode。</p>
-<p>桶中元素有自己的hash值来指定他是什么内容：</p>
-<pre><code>hash== -1 (MOVED) ： 当前节点是ForwardingNode节点，处于扩展中。
-
-hash== -2 (TREEBIN) ： 当前节点已经树化，为TreeBin对象，TreeBin节点代理红黑树操作
-
-hash== -3 (RESERVED) ： 临时保留的哈希
-</code></pre>
-<h2 id="重要的内部类"><a href="#重要的内部类" class="headerlink" title="重要的内部类"></a>重要的内部类</h2><p>1.Node节点类：<strong>这个类是后面三个类的基类。</strong>和HashMap中的节点类似，只是其<strong>val变量和next指针都用volatile来修饰</strong>。且不允许调用setValue方法修改Node的value值。</p>
-<p>2.TreeNode：<strong>树节点</strong>类，指的是整个TreeBin中的节点的数据结构。</p>
-<p>链表过长时会转换成红黑树，但是与HashMap不相同的是，<strong>它不直接转换为红黑树</strong>，而是把Node包装成树节点<strong>TreeNode放在TreeBin对象</strong>中，然后由TreeBin这个数据结构完成对红黑树的包装。</p>
-<p>而且TreeNode在ConcurrentHashMap继承自Node类，也就是说<strong>TreeNode带有next指针</strong>，这样做的目的是方便基于TreeBin的访问。</p>
-<p>3.TreeBin： </p>
-<p>这个类放了一个名为root的TreeNode节点，也就是说在实际的ConcurrentHashMap“数组”中，存放的是TreeBin对象，而不是TreeNode对象，这是与HashMap的区别，另外这个类还带有了读写锁。</p>
-<p>而HashMap的不足在于他的桶中存储的是TreeNode结点，这里的根本原因是并发过程中，有可能因为树的调整，形状发生错误变化，这样的话，桶中的第一个元素就变了，而使用TreeBin包装的话，就不会出现这种情况。 </p>
-<p>这种类型的节点，我们通过hash值是否等于-2就可以判断桶中的节点是否是红黑树。</p>
-<p>4.ForwardingNode：用于连接两个table的节点类。</p>
-<p>它包含一个nextTable指针，用于指向下一张表。而且这个节点的key value next指针全部为null。</p>
-<p>在扩容操作中，我们需要对每个桶中的结点进行分离和转移。如果某个桶结点中所有节点都已经迁移完成了（已经被转移到新表 nextTable 中了），那么会在原 table 表的该位置挂上一个 ForwardingNode 结点，说明此桶<strong>已经完成迁移</strong>。这种类型的节点的hash值是-1。</p>
-<h1 id="数组初始化"><a href="#数组初始化" class="headerlink" title="数组初始化"></a>数组初始化</h1><p>数组的初始化是在ConcurrentHashMap插入元素的时候发生的，如调用put时当前表为空时发生的。确定没有在扩容后，new一个新的表，更新sc。</p>
-<p>初始化操作在initTable()中，没加锁，因为采取的策略是通过sizeCtl来判定是否已经有线程在扩容。</p>
-<p><strong>sizeCtl(sc)</strong></p>
-<p>一个控制标志符，取值不同有不同的含义：</p>
-<ul>
-<li>负数 代表正在进行初始化或扩容操作</li>
-<li>-1 代表正在初始化</li>
-<li>-N 表示有N-1个线程正在扩容</li>
-<li>正数或0 代表hash表还没有被初始化，这个数值表示初始化(0)或下一次进行扩容的大小(正数)，这一点类似于扩容阈值的概念。它始终是容量的0.75倍。</li>
-</ul>
-<p>当sizeCtl&lt;0时，说明已经有线程在扩容，这个线程就会调用Thread.yield()让出一次CPU执行时间。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">if ((sc &#x3D; sizeCtl) &lt; 0)</span><br><span class="line">	Thread.yield(); &#x2F;&#x2F; lost initialization race; just spin</span><br><span class="line">else if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) &#123;&#x2F;&#x2F;当前没有线程扩容，那就利用CAS方法把sizectl的值置为-1 表示本线程正在进行初始化</span><br><span class="line">		try &#123;</span><br><span class="line">			if ((tab &#x3D; table) &#x3D;&#x3D; null || tab.length &#x3D;&#x3D; 0) &#123;</span><br><span class="line">				&#x2F;&#x2F; sc&gt;0表明还没初始化，通过sc的值来初始化容量大小</span><br><span class="line">				int n &#x3D; (sc &gt; 0) ? sc : DEFAULT_CAPACITY;</span><br><span class="line">				@SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">				&#x2F;&#x2F; 根据sc开辟数组作为桶</span><br><span class="line">				Node&lt;K,V&gt;[] nt &#x3D; (Node&lt;K,V&gt;[])new Node&lt;?,?&gt;[n];</span><br><span class="line">				table &#x3D; tab &#x3D; nt;</span><br><span class="line">				&#x2F;&#x2F; 相当于0.75*n 用sizeCtl来表示阈值</span><br><span class="line">				sc &#x3D; n - (n &gt;&gt;&gt; 2);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			sizeCtl &#x3D; sc;</span><br><span class="line">		&#125;</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="并发扩容-记录个数-判断是否扩容-扩容步骤"><a href="#并发扩容-记录个数-判断是否扩容-扩容步骤" class="headerlink" title="并发扩容(记录个数+判断是否扩容+扩容步骤)"></a>并发扩容(记录个数+判断是否扩容+扩容步骤)</h1><p>可以看到，优先级上，先判断是否初始化(初始化的时候其实也先判断了是否在扩容)，再判断是否在扩容(在扩容的话就需要去协助扩容)，最后才是put等操作。</p>
-<p>使用addCount()记录元素个数，并检查是否需要进行扩容。</p>
-<p>需要扩容时调用transfer()调整节点位置。</p>
-<h2 id="addCount-计数-扩容调用"><a href="#addCount-计数-扩容调用" class="headerlink" title="addCount() 计数 + 扩容调用"></a>addCount() 计数 + 扩容调用</h2><p>ConcurrentHashMap使用一个long型名为baseCount变量和一个CounterCell[]的名为counterCells的变量一起记录size。（hashmap中是单独的size变量）</p>
-<ul>
-<li><p>首先通过CAS操作去直接更新baseCount。</p>
-</li>
-<li><p>如果失败，那说明有多个线程在竞争更新baseCount。则使用fullAddCount()，把x的值插入到counterCell类中，更新counterCells，等待后续更新baseCount。(为了避免更新冲突，生成随机数来生成hash，唯一标识)</p>
-</li>
-<li><p>然后检查是否需要扩容是否正在扩容。如果需要扩容，就调用扩容方法，如果正在扩容，就帮助其扩容，最后调用的都是transfer()。</p>
-</li>
-</ul>
-<p>fullAddCount()：</p>
-<ul>
-<li><p>第一次执行的时候，counterCells这个数组应该是空的，所以先生成了一个大小为2的数组，赋值给了counterCells，然后创建一个初始值为要更新的量的CounterCell放在counterCells对应位置上。</p>
-</li>
-<li><p>如果通过(n - 1) &amp; h计算得到的线程对应的桶为空，那直接new一个初始值为x的CounterCell，放到桶中。</p>
-</li>
-<li><p>上一步失败的话，wasUncontended=false，那就通过代码，将wasUncontended更新为true，说明已经冲突了,开启下一次循环。</p>
-</li>
-</ul>
-<h2 id="transfer进行位置调整"><a href="#transfer进行位置调整" class="headerlink" title="transfer进行位置调整"></a>transfer进行位置调整</h2><p>首先搞清楚，扩容是由线程承担的，每个线程承担不小于 16 个桶中的元素的扩容。</p>
-<p>每当开始迁移一个桶中的元素的时候，线程会锁住当前槽中列表的头元素，扩容完成后会将这个桶中的节点设置为ForwardingNode。</p>
-<p>假设这时候正好有 get请求过来会仍旧在旧的列表中访问，如果是插入、修改、删除、合并、compute 等操作时遇到 ForwardingNode，就表示正在扩容，那当前线程会加入扩容大军帮忙一起扩容，扩容结束后再做元素的更新操作。</p>
-<ul>
-<li><p>计算线程能承担多少个桶的扩容</p>
-</li>
-<li><p>对要扩容的桶，新建2倍大小的数组(因为每次扩容都是*2)，nextTable指向这个新数组。</p>
-</li>
-<li><p>新建一个ForwardingNode占位，这样别的线程查到这里的时候就知道正在扩容了。</p>
-</li>
-<li><p>循环处理每个槽(即槽)中的链表元素，并初始化i和bound值，i指当前槽位序号，bound指需要处理的当前槽位边界</p>
-</li>
-<li><p>当前处理槽结束了或者本来就空不用处理，那就有个ForwardingNode标明。</p>
-</li>
-<li><p>比如当前槽是需要扩容的，先定义两个变量节点ln和hn，按我的理解应该是lowNode和highNode，分别保存hash值的第X位为0和1的节点。</p>
-</li>
-</ul>
-<p>(这个<strong>第X位</strong>实际上就是<strong>数组大小2^n的那个第n位</strong>，因为容量肯定对应二进制某位为1，其他全0，这样也更方便了他的扩容其实)</p>
-<ul>
-<li><p>使用fn&amp;n可以快速把链表中的元素区分成两类，A类和B类节点可以分散到新数组的原槽位和后边新加的槽位中。</p>
-</li>
-<li><p>根据第X位的hash不同把原槽位切成两条(hash第X位为0和为1)，然后复制到新数组中就好了，完成扩容。</p>
-</li>
-</ul>
-<h1 id="put"><a href="#put" class="headerlink" title="put"></a>put</h1><ul>
-<li><p>根据 key 计算出 hashcode 。</p>
-</li>
-<li><p>判断是否需要进行初始化，初始化完毕。</p>
-</li>
-<li><p>利用 CAS 得到当前 key 定位出的 Node 记为 f ，如果为空表示是首节点插入，<strong>可以直接写入</strong>数据，<strong>利用 CAS 尝试写入</strong>，失败则一直自旋保证成功。</p>
-</li>
-<li><p>如果不为空，且当前位置的 hashcode == MOVED == -1，表示正在扩容状态，则需要进行协助扩容。</p>
-</li>
-<li><p>如果上面都走过了，则利用 synchronized 锁住 f ， 插入数据。插入的时候，要么插入到链表中，要么插入到红黑树中。我们发现，这里的锁粒度是很小的，就锁住一个桶所以并发效率更高。</p>
-</li>
-<li><p>如果是插入到链表中，那去看看链表的长度有没有超过长度阈值8，如果超过了，就要将链表转换成红黑树。</p>
-</li>
-</ul>
-<h1 id="cas写入-重点内容，实现了线程安全"><a href="#cas写入-重点内容，实现了线程安全" class="headerlink" title="cas写入(重点内容，实现了线程安全)"></a>cas写入(重点内容，实现了线程安全)</h1><p>CAS, 比较交换，一种无锁原子算法。CAS是一条原子指令，因为他是一种系统原语，所以在OS中他是被开中断和关中断包起来的。</p>
-<p>看CAS之前，先看看synchronized这个锁操作。</p>
-<p>在并发编程中，锁是消耗性能的操作，同一时间只能有一个线程进入同步块修改变量的值，比如下面的代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">synchronized void function(int b)&#123;</span><br><span class="line">  a &#x3D; a + b；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果不加 synchronized 的话，这不是一个原子的操作，多线程上面时候会出问题。</p>
-<p>多线程修改 a 的值就会导致结果不正确，出现线程安全问题。但锁又是要给耗费性能的操作。不论是拿锁，解锁，还是等待锁，阻塞，都是非常耗费性能的。那么能不能不加锁呢？</p>
-<p>CAS过程是这样：它包含 3 个参数 CAS（V，E，N），V表示<strong>要更新的变量的值</strong>，E表示<strong>预期值</strong>，N表示<strong>新值</strong>，即在赋新值前判断是否变量是预期值。</p>
-<p>仅当V==E时，才会将V的值设为N；如果V!=E，则说明已经有其他线程做两个更新，则当前线程则什么都不做。</p>
-<p>最后，CAS 返回当前V的真实值。当多个线程同时使用CAS 操作一个变量时，只有一个会胜出，并成功更新，其余均会失败。</p>
-<p>失败的线程不会挂起，仅是被告知失败，并且允许再次尝试，当然也允许实现的线程放弃操作。基于这样的原理，CAS 操作即使没有锁，也可以发现其他线程对当前线程的干扰。</p>
-<h2 id="JAVA如何实现原子操作"><a href="#JAVA如何实现原子操作" class="headerlink" title="JAVA如何实现原子操作"></a>JAVA如何实现原子操作</h2><p>java.util.concurrent.atomic包中，所有类都是原子操作。例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">    AtomicInteger integer &#x3D; new AtomicInteger();</span><br><span class="line">    System.out.println(integer.get());</span><br><span class="line"></span><br><span class="line">    Thread[] threads &#x3D; new Thread[1000];</span><br><span class="line">	&#x2F;&#x2F; 启动1000个线程对AtomicInteger变量做自增。</span><br><span class="line">    for (int j &#x3D; 0; j &lt; 1000; j++) &#123;</span><br><span class="line">		&#x2F;&#x2F;启动线程.start()，同时就运行了run方法了</span><br><span class="line">      threads[j] &#x3D; new Thread(() -&gt;</span><br><span class="line">          integer.incrementAndGet()</span><br><span class="line">      );</span><br><span class="line">      threads[j].start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (int j &#x3D; 0; j &lt; 1000; j++) &#123;</span><br><span class="line">		&#x2F;&#x2F; join()方法会让main方法等待thread执行完毕后才继续。</span><br><span class="line">      threads[j].join();</span><br><span class="line">    &#125;</span><br><span class="line">	&#x2F;&#x2F; 得到1000</span><br><span class="line">    System.out.println(integer.get());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="CAS-缺点"><a href="#CAS-缺点" class="headerlink" title="CAS 缺点"></a>CAS 缺点</h2><p>著名的ABA问题，就是A-&gt;B-&gt;A, 已经修改完了，但是CAS无法察觉到。基本类型的话没关系，但如果是引用类型，这个对象里边有多个变量，就不好办了。</p>
-<p>这时候往往会加入版本号来标注。</p>
-<h2 id="使用CAS操作的三个核心方法"><a href="#使用CAS操作的三个核心方法" class="headerlink" title="使用CAS操作的三个核心方法"></a>使用CAS操作的三个核心方法</h2><p>三个静态的用于CAS操作的方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;获得在i位置上的Node节点</span><br><span class="line">static final &lt;K,V&gt; Node&lt;K,V&gt; tabAt(Node&lt;K,V&gt;[] tab, int i) &#123;</span><br><span class="line">	return (Node&lt;K,V&gt;)U.getObjectVolatile(tab, ((long)i &lt;&lt; ASHIFT) + ABASE);</span><br><span class="line">&#125;</span><br><span class="line">	&#x2F;&#x2F;利用CAS算法设置i位置上的Node节点。之所以能实现并发是因为他指定了原来这个节点的值是多少</span><br><span class="line">static final &lt;K,V&gt; boolean casTabAt(Node&lt;K,V&gt;[] tab, int i,</span><br><span class="line">									Node&lt;K,V&gt; c, Node&lt;K,V&gt; v) &#123;</span><br><span class="line">	return U.compareAndSwapObject(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, c, v);</span><br><span class="line">&#125;</span><br><span class="line">	&#x2F;&#x2F;利用volatile方法设置节点位置的值</span><br><span class="line">static final &lt;K,V&gt; void setTabAt(Node&lt;K,V&gt;[] tab, int i, Node&lt;K,V&gt; v) &#123;</span><br><span class="line">	U.putObjectVolatile(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, v);</span><br></pre></td></tr></table></figure>
-<h1 id="get-1"><a href="#get-1" class="headerlink" title="get"></a>get</h1><p>同1.7，因为是只读操作，所以没上锁。寻址，返回值。</p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Lua</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">HashMap</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/秋招//" class="article-tag-list-link color3">秋招</a>
+        			<a href="/categories/后端技术栈//" class="article-tag-list-link color1">后端技术栈</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2020/08/24/HashMap%E5%8F%8A%E5%85%B6%E6%8B%93%E5%B1%95/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2020/08/24/JAVA%E5%8F%8D%E5%B0%84/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          JAVA 反射
-        
-      </div>
-    </a>
   
   
-    <a href="/2020/08/12/MySQL/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MySQL</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -611,9 +243,9 @@ hash== -3 (RESERVED) ： 临时保留的哈希
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
