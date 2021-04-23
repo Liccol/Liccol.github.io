@@ -6,17 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2020 | 长晴</title>
+  <title>大数据应用概述 | 长晴</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="人间忽晚 山河已秋">
-<meta property="og:type" content="website">
-<meta property="og:title" content="长晴">
-<meta property="og:url" content="http://example.com/archives/2020/page/2/index.html">
+  <meta name="description" content="包括HDFS等大数据应用的基本介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大数据应用概述">
+<meta property="og:url" content="http://example.com/2021/04/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8%E6%A6%82%E8%BF%B0/index.html">
 <meta property="og:site_name" content="长晴">
-<meta property="og:description" content="人间忽晚 山河已秋">
+<meta property="og:description" content="包括HDFS等大数据应用的基本介绍。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2021/04/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8%E6%A6%82%E8%BF%B0/MP%E6%95%B0%E6%8D%AE%E6%B5%81.jpg">
+<meta property="article:published_time" content="2021-04-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-23T09:29:10.833Z">
 <meta property="article:author" content="Chenhan Li">
+<meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/04/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8%E6%A6%82%E8%BF%B0/MP%E6%95%B0%E6%8D%AE%E6%B5%81.jpg">
   
     <link rel="alternative" href="/atom.xml" title="长晴" type="application/atom+xml">
   
@@ -146,75 +151,241 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-大数据应用概述" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/01/02/Kubernetes%E5%AE%9E%E8%B7%B5%E4%B9%8BKubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%8F%8Adashboard%E9%85%8D%E7%BD%AE/" class="archive-article-date">
-  	<time datetime="2020-01-01T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-02</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/01/02/Kubernetes%E5%AE%9E%E8%B7%B5%E4%B9%8BKubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%8F%8Adashboard%E9%85%8D%E7%BD%AE/">Kubernetes实践之Kubernetes集群搭建及dashboard配置</a>
+    <h1 class="article-title" itemprop="name">
+      大数据应用概述
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2021/04/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8%E6%A6%82%E8%BF%B0/" class="archive-article-date">
+  	<time datetime="2021-04-22T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>大数据技术和应用包含很多，如HDFS、MapReduce、Yarn等，这些应用在研究生期间的大数据课程中接触过一些。</p>
+<p>但是因为后续参与了云计算相关内容的课题研究，所以在这块有些遗忘。</p>
+<p>所以写这么一个md来简单记录一下大数据技术的简要概述。</p>
+<a id="more"></a>
+
+<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2><p>HDFS全称Hadoop distributed file system，可以理解成就是hadoop底层使用的一个分布式的文件存储系统。</p>
+<p>HDFS的设计基于谷歌的GFS，具有以下几个独特的特点：</p>
+<p>1 高可靠性</p>
+<p>可靠性强，应该指的是整个文件系统的高容错</p>
+<p>2 高吞吐量</p>
+<p>处理速度快，应该和其流式数据访问有关</p>
+<p>3 大文件存储</p>
+<p>可存储的内容更大</p>
+<p>这个特性就使得HDFS适合于<strong>大文件存储</strong>和<strong>流式数据</strong>访问，而不适合大量小文件、随机读取、低延迟读取的应用场景。</p>
+<p>所以说，HDFS实际上就是为了大数据这个场景量身定做的，因为大数据场景下数据动不动就是好几G。</p>
+<p>HDFS的设计目标和假设如下：</p>
+<p>1 硬件故障频发，比软件异常常见</p>
+<p>所以他应用于大规模服务器集群，因为几百台服务器的部分硬件异常是常态。</p>
+<p>2 流式数据访问</p>
+<p>适合批处理，而不适合交互式的访问</p>
+<p>3 大数据存储</p>
+<p>典型存储文件大小是GB~TB级别</p>
+<p>4 简化数据一致性模型</p>
+<p>即WORM数据读写模型，<strong>仅支持追加，不支持修改</strong>。</p>
+<p>5 多硬件平台支持</p>
+<p>为了能更赚钱呗，兼容平台多</p>
+<p>6 移动计算比移动数据更划算的设计理念</p>
+<p>计算和存储采用就近原则，保证计算和数据更近，可以有效减少网络传输的负载和拥塞。</p>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>主从结构，1个NameNode（控制FS的命名空间，控制文件访问）+多个DataNode（存储，服务cilent的读写请求）+BackupNode（备份）。</p>
+<p>一个文件被写入HDFS时，先把分割，存储在DataNode的本地磁盘中。</p>
+<p>那么怎么分割呢？</p>
+<p>大文件被切分成Chunk存储，是最小存储单元，默认为128M。方便备份、存储和<strong>并行访问</strong>。</p>
+<h3 id="数据备份策略"><a href="#数据备份策略" class="headerlink" title="数据备份策略"></a>数据备份策略</h3><p>默认情况下，跨机架备份，避免相同机架的同时崩溃。</p>
+<p>第一份拷贝写入创建文件的当前节点。</p>
+<p>第二份拷贝写入当前节点的同一机架上的另一个节点。</p>
+<p>第三份拷贝写入另一个机架的节点上。</p>
+<p>从而保证当前节点正常的快速恢复，当前节点故障同机架的快速恢复，当前机架故障的快速跨域恢复。</p>
+<h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><p>有了海量数据后，需要对数据进行处理，但是如果是单机处理，会很慢。</p>
+<p>所以有了MapReduce，进行分布式并行处理，使用多个节点进行数据处理。</p>
+<p>Map把键值对映射成一组新的键值对。</p>
+<p>Reduce将同一个key的键值对归一到一起。</p>
+<p>常见的应用场景就是归类计数问题。</p>
+<p>针对这个问题，可以通过读入数据 – Map抽取需要统计的信息 – 根据key分组并shuffle（shuffle是核心，指的是map task的输出传到reduce task这个过程） – 聚类总结过滤或转化 – 输出结果</p>
+<p>所以对于所有问题，只需要改变Map和Reduce的逻辑即可。</p>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><p>做的实际上就是kv对到kv对的变化</p>
+<p>输入的时候，会有很多无规则的kv对，如k是记录的位置偏移，v是记录内容，通过中间kv保存位置偏移上的所有记录内容</p>
+<p>然后对于中间kv，根据k进行分组，统计完毕后再通过Reduce来进行分析。</p>
+<h3 id="MP系统架构"><a href="#MP系统架构" class="headerlink" title="MP系统架构"></a>MP系统架构</h3><p>也是主从的，JobTracker+多个TaskTracker</p>
+<p>JT接受客户的计算需求，分给TT，监控TT的执行情况并保证任务正常执行，就是个包工头。</p>
+<p>TT就是小工，执行计算任务。</p>
+<h3 id="MP数据流"><a href="#MP数据流" class="headerlink" title="MP数据流"></a>MP数据流</h3><p>数据首先需要通过HDFS存储，然后输入划分后的等长数据块，然后进行分类（map），合并分类结果后，进行reduce。</p>
+<p>其中shuffle</p>
+<p>需要注意的是，map获得的结果是中间结果，这个结果不需要在HDFS中备份。</p>
+<p>一是map结果本就不必存储；二是map数据传给reduce前如果失败，会有新的TT来重做map的工作。</p>
+<p>reduce并没有本地化优势，是需要分布式进行的，分步进行完毕后进行合并输出，这个数据才由HDFS进行备份。</p>
+<p><img src="/2021/04/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8%E6%A6%82%E8%BF%B0/MP%E6%95%B0%E6%8D%AE%E6%B5%81.jpg" alt="MP数据流"></p>
+<p>上图就是MP的数据流，需要注意的是map任务结束后到reduce任务开始这段时间里，即是shuffle，shuffle的数据重组是十分重要的部分。</p>
+<h2 id><a href="#" class="headerlink" title></a></h2>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Kubernetes</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">大数据</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/云计算//" class="article-tag-list-link color4">云计算</a>
+        			<a href="/categories/大数据//" class="article-tag-list-link color4">大数据</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2021/04/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8%E6%A6%82%E8%BF%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2021/02/13/%E6%B4%9E%E7%A9%B4%E5%A5%87%E6%A1%88%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">《洞穴奇案》笔记</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2020/">« Prev</a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span>
-    </nav>
   
+
+  
+
+  
+  
+
+  
+    <section id="comments" class="comments">
+      <style>
+        .comments{margin:30px;padding:10px;background:#fff}
+        @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+      </style>
+      <div id="vcomment" class="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    var notify = 'false' == true ? true : false;
+    var verify = 'false' == true ? true : false;
+    window.onload = function () {
+        new Valine({
+            el: '#vcomment', // or '.comment'
+            notify: notify,
+            verify: verify,
+            app_id: "krhfTpnKtFfBvnrRkxgQH1jY-gzGzoHsz",
+            app_key: "vJQRUFzVJXO8rPpU84QiVMe0",
+            placeholder: "欢迎畅所欲言！",
+            avatar: "/assets/img/头像.png",
+        });
+    }
+</script>
+    </section>
+    
 
 
           </div>
@@ -240,8 +411,8 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
