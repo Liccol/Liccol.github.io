@@ -17,7 +17,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2021/04/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8%E6%A6%82%E8%BF%B0/MP%E6%95%B0%E6%8D%AE%E6%B5%81.jpg">
 <meta property="article:published_time" content="2021-04-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-04-23T09:29:10.833Z">
+<meta property="article:modified_time" content="2021-04-23T12:01:59.856Z">
 <meta property="article:author" content="Chenhan Li">
 <meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
@@ -228,7 +228,21 @@ var _hmt = _hmt || [];
 <p>reduce并没有本地化优势，是需要分布式进行的，分步进行完毕后进行合并输出，这个数据才由HDFS进行备份。</p>
 <p><img src="/2021/04/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8%E6%A6%82%E8%BF%B0/MP%E6%95%B0%E6%8D%AE%E6%B5%81.jpg" alt="MP数据流"></p>
 <p>上图就是MP的数据流，需要注意的是map任务结束后到reduce任务开始这段时间里，即是shuffle，shuffle的数据重组是十分重要的部分。</p>
-<h2 id><a href="#" class="headerlink" title></a></h2>
+<h2 id="Yarn"><a href="#Yarn" class="headerlink" title="Yarn"></a>Yarn</h2><p>使Hadoop2.0的产物，是一个资源管理模块。它的出现是为了解决超大集群情况下，如4000个节点+，MR出现了JobTracker负载过重，效率低下的结果。而Yarn就是这个解决方案，是对资源进行管理的模块。</p>
+<p>Yarn把JobTracker的作业调度和任务进度调度划分成独立集成实现，使用不同的管理器进行管理。</p>
+<p>Yarn已经变成了弹性计算平台，可以管理调度不同的框架，如MapReduce、Spark等。</p>
+<p>提高了集群利用率、降低成本、提高数据共享能力。</p>
+<h3 id="Hadoop1-0-与2-0的区别"><a href="#Hadoop1-0-与2-0的区别" class="headerlink" title="Hadoop1.0 与2.0的区别"></a>Hadoop1.0 与2.0的区别</h3><p>2.0引入了新的资源管理框架Yarn，而在整体框架上，Yarn的集成能力更强，将MapReduce、NodeManager等都做成了服务（或者说app）</p>
+<p>此外，计算资源进行了容器化，可以动态资源分配，已经有了容器化的复用实践。</p>
+<p>最后，就是之前说的2.0支持多个框架。</p>
+<p>从以上的结果可以看到，2.0和1.0的变革主要就是在Yarn上，所支持的框架更广泛了，而像MR等，其主体流程实际上并没有改变。</p>
+<h2 id="HBase"><a href="#HBase" class="headerlink" title="HBase"></a>HBase</h2><p>分布式、面向列的开源数据库。注意这是一个数据库。</p>
+<p>HBase的适用场景：</p>
+<p>面向列存储（传统的关系型数据库是行存储的，列存储更快）；数据必须是结构化或者半结构化的（必须有结构可循）；需要有高写吞吐量；支持随机读；需要存储大规模数据并支持扩展</p>
+<p>HBase是一个典型的NoSQL数据库。关系型数据库的性能在目前的Web 2.0情况下性能不高/扩展性不高/数据快速备份恢复状态不好，部分应用对强一致性和异质性要求并不高，所以NoSQL数据库出现了。</p>
+<h2 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h2><p>Hive是基于Hadoop的数据仓库工具。其目的是为了简化开发人员对Hadoop中的数据分析。</p>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><p>消息队列，读写迅速，可扩展性高，持久化存储（TB级别以上），分布式设计可靠性高</p>
+<h2 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h2><h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2>
       
 
       
